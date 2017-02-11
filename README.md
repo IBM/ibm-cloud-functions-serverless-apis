@@ -1,7 +1,5 @@
-# OpenWhisk Getting Started - Serverless APIs - IBM Developer Technology
-This project provides sample code for creating your first serverless API with Apache OpenWhisk on IBM Bluemix. It should take no more than 10 minutes to get up and running.
-
-Once you complete this sample application, you can move on to more complex serverless application use cases.
+# Getting Started with OpenWhisk and Serverless APIs
+This project provides sample code for creating your Message Hub (Kafka) data processing app with Apache OpenWhisk on IBM Bluemix. It should take no more than 10 minutes to get up and running. Once you complete this sample application, you can move on to more complex serverless application use cases.
 
 # Overview diagram
 To come.
