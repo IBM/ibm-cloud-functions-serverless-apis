@@ -1,14 +1,20 @@
 # Getting Started with OpenWhisk and Serverless APIs
-This project provides sample code for creating a Cat API with Apache OpenWhisk on IBM Bluemix. It should take no more than 10 minutes to get up and running. Once you complete this sample application, you can move on to more complex serverless application use cases.
+This project provides sample code for creating your serverless REST APIs with Apache OpenWhisk on IBM Bluemix. It should take no more than 10 minutes to get up and running. Once you complete this sample application, you can move on to more complex serverless application use cases.
 
-# Overview diagram
+# Overview of HTTP REST API definition
 To come.
 
+## Flow of create, read, update, delete calls
+1. The developer invokes the PUT API endpoint to create a cat entity with a name, gender, and description.
+2. The developer invokes the GET API endpoint to retrieve the new cat data.
+3. The developer invokes the PUT API endpoint to update the cat data.
+4. The developer invokes the DELETE API endpoint to delete the cat data.
+
 # Installation
-You will need a Bluemix account to work with the IBM hosted instance of Apache OpenWhisk.
+Setting up this sample involves configuration of OpenWhisk and Cloudant or PostgreSQL on IBM Bluemix. Let’s briefly review each of them.
 
 ## Sign up for a Bluemix account
-Begin by going to [bluemix.net](https://console.ng.bluemix.net/) and signing up for a free account. After you activate your account, set an organization (for example, user@example.com) and space (for example "dev"), click on OpenWhisk in the left navigation.
+Begin by going to [bluemix.net](https://console.ng.bluemix.net/) and signing up for a free account. After you activate your account, set an organization (for example, *MyACMEorg*) and space (for example *test*), click on OpenWhisk in the left navigation.
 ![alt text](docs/openwhisk-nav.png)
 
 ## Install, configure, and test the OpenWhisk CLI
@@ -18,6 +24,7 @@ Once there, click the "Download OpenWhisk CLI" button.
 Then, follow the three steps to install, configure, and test connectivity. Note that the authorization key is not shown here.
 ![alt text](docs/openwhisk-cli.png)
 
+<<<<<<< HEAD
 
 ### Set up Cloudant
 
@@ -44,5 +51,14 @@ Use the `postCat.sh`, `getCat.sh`, `putCat.sh`, `deleteCat.sh` helper scripts to
 export CAT_API_URL=[url]
 ```
 
-# Troubleshooting
+## Troubleshooting
+
 The first place to check for errors is the OpenWhisk activation log. You can view it by tailing the log on the command line with `wsk activation poll` or you can view the [monitoring console on Bluemix](https://console.ng.bluemix.net/openwhisk/dashboard).
+
+# Credits
+
+To come.
+
+# License
+
+Licensed under the [Apache 2.0 license](LICENSE.txt).
