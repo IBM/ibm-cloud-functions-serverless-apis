@@ -24,8 +24,6 @@ Once there, click the "Download OpenWhisk CLI" button.
 Then, follow the three steps to install, configure, and test connectivity. Note that the authorization key is not shown here.
 ![alt text](docs/openwhisk-cli.png)
 
-<<<<<<< HEAD
-
 ### Set up Cloudant
 
 Log into the Bluemix console and create a Cloudant instance and name it `cats-db`. You can reuse an existing instance if you already have one. Update `CLOUDANT_INSTANCE` in `local.env` to reflect the name of the Cloudant service instance.
