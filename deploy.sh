@@ -41,10 +41,10 @@ function install() {
     transformDataForWrite,/_/$CLOUDANT_INSTANCE/update-document
 
   echo "Creating REST API actions"
-  wsk api-experimental create -n "Cats API" /example /cats get /_/$CLOUDANT_INSTANCE/read-document
-  wsk api-experimental create /example /cats delete /_/$CLOUDANT_INSTANCE/delete-document
-  wsk api-experimental create /example /cats put updateDocumentSequence
-  wsk api-experimental create /example /cats post createDocumentSequence
+  wsk api-experimental create -n "Cats API" /cats get /_/$CLOUDANT_INSTANCE/read-document
+  wsk api-experimental create /cats delete /_/$CLOUDANT_INSTANCE/delete-document
+  wsk api-experimental create /cats put updateDocumentSequence
+  wsk api-experimental create /cats post createDocumentSequence
 
   echo -e "Install Complete"
 }
@@ -67,10 +67,10 @@ function uninstall() {
 }
 
 function showenv() {
-  echo -e "$CLOUDANT_INSTANCE"
-  echo -e "$CLOUDANT_USERNAME"
-  echo -e "$CLOUDANT_PASSWORD"
-  echo -e "$CLOUDANT_DATABASE"
+  echo -e CLOUDANT_INSTANCE="$CLOUDANT_INSTANCE"
+  echo -e CLOUDANT_USERNAME="$CLOUDANT_USERNAME"
+  echo -e CLOUDANT_PASSWORD="$CLOUDANT_PASSWORD"
+  echo -e CLOUDANT_DATABASE="$CLOUDANT_DATABASE"
 }
 
 case "$1" in
