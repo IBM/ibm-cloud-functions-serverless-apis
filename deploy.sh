@@ -32,19 +32,19 @@ function install() {
     --param dbname "$CLOUDANT_DATABASE"
 
   echo "Creating actions"
-  wsk action create transformDataForWrite actions/transformDataForWrite.js
+  wsk action create transform-data-for-write actions/transform-data-for-write.js
 
-  wsk action create --sequence createDocumentSequence \
-    transformDataForWrite,/_/$CLOUDANT_INSTANCE/create-document
+  wsk action create --sequence create-document-sequence \
+    transform-data-for-write,/_/$CLOUDANT_INSTANCE/create-document
 
-  wsk action create --sequence updateDocumentSequence \
-    transformDataForWrite,/_/$CLOUDANT_INSTANCE/update-document
+  wsk action create --sequence update-document-sequence \
+    transform-data-for-write,/_/$CLOUDANT_INSTANCE/update-document
 
   echo "Creating REST API actions"
-  wsk api-experimental create -n "Cats API" /cats get /_/$CLOUDANT_INSTANCE/read-document
-  wsk api-experimental create /cats delete /_/$CLOUDANT_INSTANCE/delete-document
-  wsk api-experimental create /cats put updateDocumentSequence
-  wsk api-experimental create /cats post createDocumentSequence
+  wsk api-experimental create -n "Cats API" /v1 /cats get /_/$CLOUDANT_INSTANCE/read-document
+  wsk api-experimental create /v1 /cats delete /_/$CLOUDANT_INSTANCE/delete-document
+  wsk api-experimental create /v1 /cats put update-document-sequence
+  wsk api-experimental create /v1 /cats post create-document-sequence
 
   echo -e "Install Complete"
 }
@@ -53,12 +53,12 @@ function uninstall() {
   echo -e "Uninstalling..."
 
   echo "Removing API actions..."
-  wsk api-experimental delete /example
+  wsk api-experimental delete /v1
 
   echo "Removing actions..."
-  wsk action delete createDocumentSequence
-  wsk action delete updateDocumentSequence
-  wsk action delete transformDataForWrite
+  wsk action delete create-document-sequence
+  wsk action delete update-document-sequence
+  wsk action delete transform-data-for-write
 
   echo "Removing packages..."
   wsk package delete "$CLOUDANT_INSTANCE"
