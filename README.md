@@ -4,63 +4,55 @@ This project provides sample code for creating your serverless REST APIs with Ap
 # Overview of the HTTP REST API
 The sample demonstrates how to build a simple CRUD (create, read, update, delete) interface for working with an entity that represents a cat.
 
-HTTP endpoints for each call - corresponding to the `POST`, `GET`, `PUT`, and `DELETE` HTTP methods - are mapped to OpenWhisk actions that modify the state in a Cloudant database.
+HTTP endpoints for each call - corresponding to the `POST`, `GET`, `PUT`, and `DELETE` HTTP methods - are mapped to OpenWhisk actions that modify the state in a MySQL database.
 
 # Installation
-Setting up this sample involves configuration of OpenWhisk and Cloudant on IBM Bluemix. [If you haven't already signed up for Bluemix and configured OpenWhisk, review those steps first](docs/OPENWHISK.md).
+Setting up this sample involves configuration of OpenWhisk and MySQL on IBM Bluemix. [If you haven't already signed up for Bluemix and configured OpenWhisk, review those steps first](docs/OPENWHISK.md).
 
-### Set up Cloudant
-Log into the Bluemix console, provision a Cloudant service instance, and name it `openwhisk-cloudant`. You can reuse an existing instance if you already have one.
+### Set up MySQL
+Create a MySQL instance. You can create one on the Bluemix console, or connect to your own instance. You will need to configure this example with host, user, password and database name.
 
-Copy `template.local.env` to a new file named `local.env` and update the `CLOUDANT_INSTANCE` value to reflect the name of the Cloudant service instance above.
+To create a MySQL instance on bluemix, log into the Bluemix console, go to catalog, and provision a ClearDB MySQL database. Log into the ClearDB dashboard, and select the default database created for you. Grab the user, password and host information under "Endpoint Information".
 
-Then set the `CLOUDANT_USERNAME` and `CLOUDANT_PASSWORD` values based on the service credentials for the service.
-
-Log into the Cloudant web console and create a database, such as `cats`. Set the database name in the `CLOUDANT_DATABASE` variable.
-
-### Bind the Cloudant instance to OpenWhisk
-To make Cloudant available to OpenWhisk, we create a "package" along with connection information.
-
-```bash
-wsk package bind /whisk.system/cloudant "$CLOUDANT_INSTANCE" \
-  --param username "$CLOUDANT_USERNAME" \
-  --param password "$CLOUDANT_PASSWORD" \
-  --param host "$CLOUDANT_USERNAME.cloudant.com" \
-  --param dbname "$CLOUDANT_DATABASE"
-```
+Copy `template.local.env` to a new file named `local.env` and update the `MYSQL_HOST`, `MYSQL_USERNAME`, `MYSQL_PASSWORD` and `MYSQL_DATABASE` values to reflect the name of the MySQL database instance you created.
 
 ### Create OpenWhisk actions to modify cat data
-Next, create the custom action and reuse Cloudant-specific actions that already exist within the OpenWhisk environment to manage cat data. Actions can also be grouped into a _sequence_ of actions.
+Create the custom actions to manage cat data. We will create four actions, one for each method (POST, PUT, GET, and DELETE) of our API.
 
-This custom `transform-data-for-write` action simply takes supplied parameters and puts them into a format that Cloudant can recognize to insert a new JSON record.
-```bash
-wsk action create transform-data-for-write actions/transform-data-for-write.js
+The code for the actions is located in `/actions`. Let's create the POST action first.
+
+The javascript function for the POST action is located at `/actions/cat-post-action/index.js`. This function depends on a node package: `mysql`. Install the node packages using `npm install`, and create an archive that includes your application and your node dependencies.
+
+```
+  cd actions/cat-post-action
+  npm install
+  zip -rq action.zip *
+``` 
+Once you have an archive, you can use the OpenWhisk CLI to create an action.
+```
+  wsk action create cat-post --kind nodejs:6 action.zip \
+  --param "MYSQL_HOST" $MYSQL_HOST \
+  --param "MYSQL_USER" $MYSQL_USER \
+  --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
+  --param "MYSQL_DATABASE" $MYSQL_DATABASE
 ```
 
-This sequence uses the action above and pairs it in a sequence with the built-in Cloudant `create-document` action for backing our `POST` operation.
-```bash
-wsk action create --sequence create-document-sequence \
-  transform-data-for-write,/_/$CLOUDANT_INSTANCE/create-document
-```
+There are a [number of packages available](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments) by default in the OpenWhisk runtime environment. For packages that are not included by default, we can upload them in a zip file when we create the action. If your application requires no additional packages, you can create an action by linking directly to your `js` file. No need to create and upload an archive. More information in the [getting started docs](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action).
 
-This sequence uses the action above and pairs it in a sequence with the Cloudant `update-document` action for backing our `PUT` operation.
-```bash
-wsk action create --sequence update-document-sequence \
-  transform-data-for-write,/_/$CLOUDANT_INSTANCE/update-document
-```
+Notice that the command above passes in parameters needed to connect to your MySQL database. Specifying values here will allow these to apply each time you call your action, instead of having to pass them in each time.
 
-We don't have to define actions for our `GET` and `DELETE` operations because they don't require data transformation nor a sequence. We'll specify the Cloudant `read-document` and `delete-document` when we declare the API mapping in the next step.
+Repeat the above steps for PUT, GET, and DELETE.
 
 ### Create REST API endpoints
-Create four endpoints using the following commands. This will map an resource endpoint (`/cats`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods and associate it with an OpenWhisk action or action sequence.
+Now that we have our actions, we can create REST endpoints to attach to those actions. Create four endpoints using the following commands. This will map an resource endpoint (`/cats`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods and associate it with the OpenWhisk actions you just created.
 
 ```bash
-wsk api-experimental create -n "Cats API" /v1 /cats get /_/$CLOUDANT_INSTANCE/read-document
-wsk api-experimental create /v1 /cats delete /_/$CLOUDANT_INSTANCE/delete-document
-wsk api-experimental create /v1 /cats put update-document-sequence
-wsk api-experimental create /v1 /cats post create-document-sequence
-```
 
+wsk api-experimental create -n "Cats API" /v1 /cats post cat-post
+wsk api-experimental create /v1 /cats put cat-put
+wsk api-experimental create /v1 /cats get cat-get
+wsk api-experimental create /v1 /cats delete cat-delete
+```
 ### Use the `deploy.sh` script to automate the steps above
 The commands above exist in a convenience script that reads the environment variables out of `local.env` and injects them where needed.
 
@@ -80,8 +72,8 @@ But first, set the `CAT_API_URL` environment variable to the endpoint matching t
 export CAT_API_URL=[url]
 ./cat-post.sh [name of cat] [color of cat]
 ./cat-get.sh [id]
-./cat-put.sh [id] [rev] [name of cat] [color of cat]
-./cat-delete.sh [id] [rev]
+./cat-put.sh [id] [name of cat] [color of cat]
+./cat-delete.sh [id]
 ```
 
 ## Troubleshooting
