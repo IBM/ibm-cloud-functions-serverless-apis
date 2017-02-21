@@ -1,0 +1,14 @@
+{
+	"name": "post-cat-action",
+	"description": "node OpenWhisk action to add a cat to a mysql database",
+	"license": "Apache-2.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/IBM/openwhisk-serverless-apis.git"
+	},
+	"version": "1.0.0",
+	"main": "index.js",
+	"dependencies": {
+		"mysql": "2.13.0"
+	}
+}

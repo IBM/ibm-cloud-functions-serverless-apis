@@ -7,4 +7,4 @@ if [ "$#" -ne 1 ]; then
     exit
 fi
 
-curl ${CAT_API_URL}?docid=${1}
+curl ${CAT_API_URL}?id=${1}
