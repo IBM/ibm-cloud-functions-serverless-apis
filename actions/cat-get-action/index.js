@@ -39,13 +39,22 @@ function myAction(params) {
             database: params.MYSQL_DATABASE
         });
 
+        console.log('Connecting')
+        connection.connect(function(err) {
+            if (err) {
+                console.error('error connecting: ' + err.stack)
+                resolve(err)
+                return;
+            }
+        });
+
         console.log('Querying')
         var queryText = 'SELECT * FROM cats WHERE id=?'
 
         connection.query(queryText, [params.id], function(error, result) {
             if (error) {
                 console.log(error)
-                reject()
+                reject(error)
             } else {
                 console.log(result)
                 resolve(result[0])
