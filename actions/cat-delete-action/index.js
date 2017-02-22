@@ -39,13 +39,21 @@ function myAction(params) {
             database: params.MYSQL_DATABASE
         });
 
-        var queryText = 'DELETE FROM cats WHERE id=?'
+        console.log('Connecting')
+        connection.connect(function(err) {
+            if (err) {
+                console.error('error connecting: ' + err.stack)
+                resolve(err)
+                return;
+            }
+        });
 
+        var queryText = 'DELETE FROM cats WHERE id=?'
         console.log('Querying: ' + queryText)
         connection.query(queryText, [params.id], function(error, result) {
             if (error) {
                 console.log(error)
-                reject()
+                reject(error)
             } else {
                 console.log(result)
                 resolve({

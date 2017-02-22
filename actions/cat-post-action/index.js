@@ -41,6 +41,15 @@ function myAction(params) {
         });
 
 
+        console.log('Connecting')
+        connection.connect(function(err) {
+            if (err) {
+                console.error('error connecting: ' + err.stack)
+                resolve(err)
+                return;
+            }
+        });
+
         console.log('Querying')
 
         connection.query('CREATE TABLE cats (id int auto_increment primary key, name varchar(256) NOT NULL, color varchar(256) NOT NULL)', function(err, result) {
@@ -53,9 +62,12 @@ function myAction(params) {
             connection.query(queryText, [params.name, params.color], function(error, result) {
                 if (error) {
                     console.log(error);
-                    reject()
+                    reject(error)
                 } else {
-                    resolve({ success: true, id: result.insertId })
+                    resolve({
+                        success: true,
+                        id: result.insertId
+                    })
                 }
                 console.log('Disconnecting from the mysql database.');
                 connection.end();
