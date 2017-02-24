@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 IBM Corp. All Rights Reserved.
+ * Copyright 2017 IBM Corp. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@
 /**
  * This action updates a Cat by ID in a MySQL Database
  *
- * @param   params.MYSQL_HOST                   MySQL host
- * @param   params.MYSQL_USER                   MySQL user
+ * @param   params.MYSQL_HOSTNAME               MySQL hostname
+ * @param   params.MYSQL_USERNAME               MySQL username
  * @param   params.MYSQL_PASSWORD               MySQL password
  * @param   params.MYSQL_DATABASE               MySQL database
  * @param   params.name                         Name of the cat to insert into the table
  * @param   params.color                        Color of the cat to insert into the table
- 
+
  * @return  Promise for the MySQL result
  */
 function myAction(params) {
@@ -34,8 +34,8 @@ function myAction(params) {
 
         var mysql = require('mysql');
         var connection = mysql.createConnection({
-            host: params.MYSQL_HOST,
-            user: params.MYSQL_USER,
+            host: params.MYSQL_HOSTNAME,
+            user: params.MYSQL_USERNAME,
             password: params.MYSQL_PASSWORD,
             database: params.MYSQL_DATABASE
         });

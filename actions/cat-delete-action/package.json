@@ -1,6 +1,6 @@
 {
 	"name": "delete-cat-action",
-	"description": "node OpenWhisk action to delete a cat from a mysql database",
+	"description": "Node OpenWhisk action to delete a cat from a MySQL database",
 	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",
