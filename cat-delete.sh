@@ -1,9 +1,7 @@
 #!/bin/bash
-YELLOW='\033[0;33m'
-NC='\033[0m'
 
 if [ "$#" -ne 1 ]; then
-    echo -e "${YELLOW}Usage: $0 [id] ${NC}"
+    echo -e "Usage: $0 [id]"
     exit
 fi
 

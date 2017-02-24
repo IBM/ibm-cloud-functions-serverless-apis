@@ -1,6 +1,6 @@
 {
 	"name": "put-cat-action",
-	"description": "node OpenWhisk action to update a cat by ID in a mysql database",
+	"description": "Node OpenWhisk action to update a cat by ID in a MySQL database",
 	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",

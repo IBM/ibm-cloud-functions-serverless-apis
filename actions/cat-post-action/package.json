@@ -1,6 +1,6 @@
 {
 	"name": "post-cat-action",
-	"description": "node OpenWhisk action to add a cat to a mysql database",
+	"description": "Node OpenWhisk action to add a cat to a MySQL database",
 	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",

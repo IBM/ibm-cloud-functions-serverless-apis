@@ -29,10 +29,10 @@ function install() {
   npm install
   zip -rq action.zip *
   wsk action create cat-post --kind nodejs:6 action.zip \
-  --param "MYSQL_HOST" $MYSQL_HOST \
-  --param "MYSQL_USER" $MYSQL_USER \
-  --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-  --param "MYSQL_DATABASE" $MYSQL_DATABASE
+    --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
+    --param "MYSQL_USERNAME" $MYSQL_USERNAME \
+    --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
+    --param "MYSQL_DATABASE" $MYSQL_DATABASE
   wsk api-experimental create -n "Cats API" /v1 /cats post cat-post
   cd ../..
 
@@ -41,10 +41,10 @@ function install() {
   npm install
   zip -rq action.zip *
   wsk action create cat-put --kind nodejs:6 action.zip \
-  --param "MYSQL_HOST" $MYSQL_HOST \
-  --param "MYSQL_USER" $MYSQL_USER \
-  --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-  --param "MYSQL_DATABASE" $MYSQL_DATABASE
+    --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
+    --param "MYSQL_USERNAME" $MYSQL_USERNAME \
+    --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
+    --param "MYSQL_DATABASE" $MYSQL_DATABASE
   wsk api-experimental create /v1 /cats put cat-put
   cd ../..
 
@@ -53,10 +53,10 @@ function install() {
   npm install
   zip -rq action.zip *
   wsk action create cat-get --kind nodejs:6 action.zip \
-  --param "MYSQL_HOST" $MYSQL_HOST \
-  --param "MYSQL_USER" $MYSQL_USER \
-  --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-  --param "MYSQL_DATABASE" $MYSQL_DATABASE
+    --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
+    --param "MYSQL_USERNAME" $MYSQL_USERNAME \
+    --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
+    --param "MYSQL_DATABASE" $MYSQL_DATABASE
   wsk api-experimental create /v1 /cats get cat-get
   cd ../..
 
@@ -65,10 +65,10 @@ function install() {
   npm install
   zip -rq action.zip *
   wsk action create cat-delete --kind nodejs:6 action.zip \
-  --param "MYSQL_HOST" $MYSQL_HOST \
-  --param "MYSQL_USER" $MYSQL_USER \
-  --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-  --param "MYSQL_DATABASE" $MYSQL_DATABASE
+    --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
+    --param "MYSQL_USERNAME" $MYSQL_USERNAME \
+    --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
+    --param "MYSQL_DATABASE" $MYSQL_DATABASE
   wsk api-experimental create /v1 /cats delete cat-delete
   cd ../..
 
@@ -92,8 +92,8 @@ function uninstall() {
 }
 
 function showenv() {
-  echo -e MYSQL_HOST="$MYSQL_HOST"
-  echo -e MYSQL_USER="$MYSQL_USER"
+  echo -e MYSQL_HOSTNAME="$MYSQL_HOSTNAME"
+  echo -e MYSQL_USERNAME="$MYSQL_USERNAME"
   echo -e MYSQL_PASSWORD="$MYSQL_PASSWORD"
   echo -e MYSQL_DATABASE="$MYSQL_DATABASE"
 }

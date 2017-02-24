@@ -1,9 +1,7 @@
 #!/bin/bash
-YELLOW='\033[0;33m'
-NC='\033[0m'
 
 if [ "$#" -ne 2 ]; then
-    echo -e "${YELLOW}Usage: $0 [name of cat] [color of cat]${NC}"
+    echo -e "Usage: $0 [name of cat] [color of cat]"
     exit
 fi
 

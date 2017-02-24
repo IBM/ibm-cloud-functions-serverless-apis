@@ -1,6 +1,6 @@
 {
 	"name": "get-cat-action",
-	"description": "node OpenWhisk action to get a cat by ID from a mysql database",
+	"description": "Node OpenWhisk action to get a cat by ID from a MySQL database",
 	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",
