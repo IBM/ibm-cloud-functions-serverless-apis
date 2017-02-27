@@ -60,7 +60,7 @@ function myAction(params) {
                 resolve(result[0])
             }
             console.log('Disconnecting from the mysql database.');
-            connection.end();
+            connection.destroy();
         });
 
 

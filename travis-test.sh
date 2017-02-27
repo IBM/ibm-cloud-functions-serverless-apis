@@ -14,16 +14,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##############################################################################
+set -e
 
-source env.sh
-
+OPEN_WHISK_BIN=/home/ubuntu/bin
 LINK=https://openwhisk.ng.bluemix.net/cli/go/download/linux/amd64/wsk
-echo_my "Downloading OpenWhisk CLI from '$LINK'...\n"
+
+echo "Downloading OpenWhisk CLI from '$LINK'...\n"
 curl -O $LINK
 chmod u+x wsk
+export PATH=$PATH:`pwd`
 
-echo_my "Install OpenWhisk CLI into '$OPEN_WHISK_BIN'...\n"
-mkdir $OPEN_WHISK_BIN || true # ignore the error if the directory exists
-mv wsk $OPEN_WHISK_BIN
+echo "Configuring CLI from apihost and API key\n"
+wsk property set --apihost openwhisk.ng.bluemix.net --auth $OPEN_WHISK_KEY #OPEN_WHISK_KEY defined in travis-ci console
 
-echo_my "All done!\n"
+echo "Configure local.env"
+touch local.env #Configurations defined in travis-ci console
+
+echo "Deploying wsk actions, etc."
+./deploy.sh --install
+
+echo "Find and set Cat API URL"
+export CAT_API_URL=`wsk api-experimental list | tail -1 | awk '{print $5}'`
+
+echo "Running pythontests"
+python3 --version
+sudo -H pip install 'requests[security]'
+python travis-test.py 
+
+echo "Uninstalling wsk actions, etc."
+./deploy.sh --uninstall
