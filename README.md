@@ -1,12 +1,20 @@
 # OpenWhisk 101 - OpenWhisk and Serverless APIs
-This project provides sample code for creating serverless REST APIs with Apache OpenWhisk on IBM Bluemix. It should take no more than 10 minutes to get up and running. Once you complete this sample application, you can move on to more complex serverless application use cases, such as those named _OpenWhisk 201_ or tagged as [_openwhisk-use-cases_](https://github.com/search?q=topic%3Aopenwhisk-use-cases+org%3AIBM&type=Repositories).
+This project provides sample code for creating serverless REST APIs with Apache OpenWhisk on IBM Bluemix. It should take no more than 10 minutes to get up and running.
 
-Serverless platforms like Apache OpenWhisk provide a runtime that scales automatically in response to demand, resulting in a better match between the cost of cloud resources consumed and business value gained. One of the key use cases for OpenWhisk is to map HTTP REST API calls to business logic functions that create, read, update, and delete data.
+This sample assumes you have a basic understanding of the OpenWhisk programming model, which is based on Triggers, Actions, and Rules. If not, you may want to [explore this demo first](https://github.com/IBM/openwhisk-action-trigger-rule).
 
-# Overview of the HTTP REST API
+Once you complete this sample application, you can move on to more complex serverless application use cases, such as those named _OpenWhisk 201_ or tagged as [_openwhisk-use-cases_](https://github.com/search?q=topic%3Aopenwhisk-use-cases+org%3AIBM&type=Repositories).
+
+Serverless platforms like Apache OpenWhisk provide a runtime that scales automatically in response to demand, resulting in a better match between the cost of cloud resources consumed and business value gained.
+
+One of the key use cases for OpenWhisk is to map HTTP REST API calls to business logic functions that create, read, update, and delete data.
+
+# Overview of an HTTP REST API backed by OpenWhisk
 The sample demonstrates how to build a simple CRUD (create, read, update, delete) interface for working with an entity that represents a cat that has an id, name, and color.
 
 HTTP endpoints for each call - corresponding to the `POST`, `GET`, `PUT`, and `DELETE` HTTP methods - are mapped to OpenWhisk actions that modify cat state in a MySQL database.
+
+![High level diagram](docs/serverless-apis.png)
 
 The Node.js runtime on Bluemix provides a [built-in whitelist of NPM modules](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md#javascript-runtime-environments). This demo also highlights how additional Node.js dependencies - such as the MySQL client - can be packaged in a ZIP file with custom actions to provide a high level of extensibility.
 
