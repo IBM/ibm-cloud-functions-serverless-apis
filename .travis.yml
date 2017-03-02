@@ -1,0 +1,5 @@
+language: bash
+sudo: true
+
+script:
+    - ./travis-test.sh
