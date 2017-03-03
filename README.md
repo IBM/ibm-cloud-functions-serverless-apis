@@ -37,16 +37,16 @@ You can create a MySQL database through the Bluemix console, or connect to your 
 
 To create a MySQL instance, log into the Bluemix console, go to catalog, and provision a [ClearDB MySQL database instance](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/) or a [Compose for MySQL](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/) database instance. ClearDB has a free tier for simple testing, while Compose has tiers for greater production workloads.
 
-* For [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/), log into the ClearDB dashboard, and select the default database created for you. Grab the user, password and host information under "Endpoint Information".
+* For [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/), log into the ClearDB dashboard, and select the default database created for you. Get the user, password and host information under "Endpoint Information".
 
-* For [Compose](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/), grab the information from the Service Credentials tab in the Bluemix console.
+* For [Compose](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/), get the information from the Service Credentials tab in the Bluemix console.
 
 Copy `template.local.env` to a new file named `local.env` and update the `MYSQL_HOSTNAME`, `MYSQL_USERNAME`, `MYSQL_PASSWORD` and `MYSQL_DATABASE` values to reflect the values for your MySQL  instance.
 
 ## Create the OpenWhisk packages, triggers, actions and rules
-To get started quickly, use the `deploy.sh` convenience script that reads the environment variables out of `local.env` and injects them where needed.
+To get started quickly, use the `deploy.sh` convenience script that reads the environment variables from `local.env`.
 
-`deploy.sh` executes the package, trigger, action, and rule creating commands using the `wsk` CLI tool. In a later section of this tutorial you will these commands yourself.
+`deploy.sh` executes the `wsk` CLI package, trigger, action, and rule creation commands. In a later section of this tutorial you will run these commands directly.
 
 ```bash
 ./deploy.sh --install
@@ -189,6 +189,11 @@ wsk action delete cat-delete
 
 ## Troubleshooting
 The first place to check for errors is the OpenWhisk activation log. You can view it by tailing the log on the command line with `wsk activation poll` or you can drill into details visually with the [monitoring console on Bluemix](https://console.ng.bluemix.net/openwhisk/dashboard).
+
+If the error is not immediately obvious, check to see that you have the latest version of the `wsk` CLI installed. You can compare server and client versions by running:
+```bash
+wsk property get
+```
 
 # License
 Licensed under the [Apache 2.0 license](LICENSE.txt).
