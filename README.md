@@ -51,6 +51,7 @@ To get started quickly, use the `deploy.sh` convenience script that reads the en
 ```bash
 ./deploy.sh --install
 ```
+> **Note**: If you see any errors with the command above, refer to the [Troubleshooting](#troubleshooting) section.
 
 > **Note**: `deploy.sh` will be replaced with the [`wskdeploy`](https://github.com/openwhisk/openwhisk-wskdeploy) tool in the future. `wskdeploy` uses a manifest to orchestrate the triggers, actions, and rules deployed to OpenWhisk.
 
@@ -77,7 +78,7 @@ Now we're ready to take a deeper look into what's going on in the `deploy.sh` sc
 ## Create OpenWhisk actions to modify cat data
 Start by create custom actions to manage cat data. We will create four actions, one for each method (POST, PUT, GET, and DELETE) of our API.
 
-> There are a [number of packages available](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments) by default in the OpenWhisk runtime environment. For packages that are not included by default, you can upload them in a ZIP file when you create your action. If your application requires no additional packages, you can create an action by uploading your JavaScript action file directly. In those cases there is no need to create and upload an archive. More information on the two approaches is available in the [getting started documentation](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action).
+> **Note**: There are a [number of packages available](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments) by default in the OpenWhisk runtime environment. For packages that are not included by default, you can upload them in a ZIP file when you create your action. If your application requires no additional packages, you can create an action by uploading your JavaScript action file directly. In those cases there is no need to create and upload an archive. More information on the two approaches is available in the [getting started documentation](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action).
 
 The code for the actions is located in `/actions`. Let's start with the action action that creates a cat record first.
 
