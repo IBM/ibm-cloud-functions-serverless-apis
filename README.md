@@ -91,7 +91,7 @@ The JavaScript function for the POST action is located in `/actions/cat-post-act
 ```
 Once you have the archive built, you can use the OpenWhisk CLI to create an action with it, passing along environment variables from `local.env`.
 ```bash
-source local.env
+source ../../local.env
 
 # Create
 wsk action create cat-post --kind nodejs:6 action.zip \
@@ -107,7 +107,11 @@ You can then manually invoke the method using the `wsk` CLI to test that the log
 
 ```bash
 # Test
-wsk action invoke --blocking --param name Henry --param color Black cat-post
+wsk action invoke \
+  --blocking \
+  --param name Henry \
+  --param color Black \
+  cat-post
 ```
 
 Repeat the above steps to create and test the corresponding PUT, GET, and DELETE actions.
@@ -115,7 +119,7 @@ Repeat the above steps to create and test the corresponding PUT, GET, and DELETE
 ### The cat update action
 ```bash
 # Create
-cd actions/cat-put-action
+cd ../../actions/cat-put-action
 npm install
 zip -rq action.zip *
 wsk action create cat-put --kind nodejs:6 action.zip \
@@ -125,13 +129,18 @@ wsk action create cat-put --kind nodejs:6 action.zip \
   --param "MYSQL_DATABASE" $MYSQL_DATABASE
 
 # Test
-wsk action invoke --blocking --param name Henry --param color Gray --param id 1 cat-put
+wsk action invoke \
+  --blocking \
+  --param name Henry \
+  --param color Gray \
+  --param id 1 \
+  cat-put
 ```
 
 ### The cat read action
 ```bash
 # Create
-cd actions/cat-get-action
+cd ../../actions/cat-get-action
 npm install
 zip -rq action.zip *
 wsk action create cat-get --kind nodejs:6 action.zip \
@@ -141,13 +150,16 @@ wsk action create cat-get --kind nodejs:6 action.zip \
   --param "MYSQL_DATABASE" $MYSQL_DATABASE
 
 # Test
-wsk action invoke --blocking --param id 1 cat-get
+wsk action invoke \
+  --blocking \
+  --param id 1 \
+  cat-get
 ```
 
 ### The cat delete action
 ```bash
 # Create
-cd actions/cat-delete-action
+cd ../../actions/cat-delete-action
 npm install
 zip -rq action.zip *
 wsk action create cat-delete --kind nodejs:6 action.zip \
@@ -157,11 +169,14 @@ wsk action create cat-delete --kind nodejs:6 action.zip \
   --param "MYSQL_DATABASE" $MYSQL_DATABASE
 
 # Test
-wsk action invoke --blocking --param id 1 cat-delete
+wsk action invoke \
+  --blocking \
+  --param id 1 \
+  cat-delete
 ```
 
 ## Create REST API endpoints
-Now that we have our actions, we can create REST URLs to attach to those actions. Create four endpoints using the following commands. This will map an resource endpoint (`/cats`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods and associate it with the corresponding OpenWhisk action you just created.
+Now that we have our actions, we can create REST URLs to attach to those actions. This will map an resource endpoint (`/cats`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods and associate it with the corresponding OpenWhisk action you just created.
 
 ```bash
 # Create
