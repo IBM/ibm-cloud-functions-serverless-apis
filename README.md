@@ -32,7 +32,7 @@ These instructions will have you:
 * [Remove the packages, triggers, actions and rules](#remove-the-packages-triggers-actions-and-rules)
 * [Recreate the deployment manually to understand the sample more deeply](#recreate-the-deployment-manually-to-understand-the-sample-more-deeply)
 
-### Provision a MySQL database on Bluemix
+## Provision a MySQL database on Bluemix
 You can create a MySQL database through the Bluemix console, or connect to your own instance. You will need to configure this example with host, user, password and database name.
 
 To create a MySQL instance, log into the Bluemix console, go to catalog, and provision a [ClearDB MySQL database instance](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/) or a [Compose for MySQL](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/) database instance. ClearDB has a free tier for simple testing, while Compose has tiers for greater production workloads.
@@ -43,7 +43,7 @@ To create a MySQL instance, log into the Bluemix console, go to catalog, and pro
 
 Copy `template.local.env` to a new file named `local.env` and update the `MYSQL_HOSTNAME`, `MYSQL_USERNAME`, `MYSQL_PASSWORD` and `MYSQL_DATABASE` values to reflect the values for your MySQL  instance.
 
-### Create the OpenWhisk packages, triggers, actions and rules
+## Create the OpenWhisk packages, triggers, actions and rules
 To get started quickly, use the `deploy.sh` convenience script that reads the environment variables out of `local.env` and injects them where needed.
 
 `deploy.sh` executes the package, trigger, action, and rule creating commands using the `wsk` CLI tool. In a later section of this tutorial you will these commands yourself.
@@ -71,17 +71,17 @@ Delete the OpenWhisk resources that were created, using the same convenience scr
 ./deploy.sh --uninstall
 ```
 
-## Recreate the deployment manually to understand the sample more deeply
+# Recreate the deployment manually to understand the sample more deeply
 Now we're ready to take a deeper look into what's going on in the `deploy.sh` script so that you understand how to work with OpenWhisk triggers, actions, rules, and packages in more detail.
 
-### Create OpenWhisk actions to modify cat data
+## Create OpenWhisk actions to modify cat data
 Start by create custom actions to manage cat data. We will create four actions, one for each method (POST, PUT, GET, and DELETE) of our API.
 
 > There are a [number of packages available](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments) by default in the OpenWhisk runtime environment. For packages that are not included by default, you can upload them in a ZIP file when you create your action. If your application requires no additional packages, you can create an action by uploading your JavaScript action file directly. In those cases there is no need to create and upload an archive. More information on the two approaches is available in the [getting started documentation](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action).
 
 The code for the actions is located in `/actions`. Let's start with the action action that creates a cat record first.
 
-#### The cat create action
+### The cat create action
 The JavaScript function for the POST action is located in `/actions/cat-post-action/index.js`. This function depends on a Node.js package: `mysql` which we need to connect to the database. Install the Node packages using `npm install` and create an archive that includes your application and your Node dependencies.
 ```bash
   cd actions/cat-post-action
@@ -111,7 +111,7 @@ wsk action invoke --blocking --param name Henry --param color Black cat-post
 
 Repeat the above steps to create and test the corresponding PUT, GET, and DELETE actions.
 
-#### The cat update action
+### The cat update action
 ```bash
 # Create
 cd actions/cat-put-action
@@ -127,7 +127,7 @@ wsk action create cat-put --kind nodejs:6 action.zip \
 wsk action invoke --blocking --param name Henry --param color Gray --param id 1 cat-put
 ```
 
-#### The cat read action
+### The cat read action
 ```bash
 # Create
 cd actions/cat-get-action
@@ -143,7 +143,7 @@ wsk action create cat-get --kind nodejs:6 action.zip \
 wsk action invoke --blocking --param id 1 cat-get
 ```
 
-#### The cat delete action
+### The cat delete action
 ```bash
 # Create
 cd actions/cat-delete-action
@@ -159,7 +159,7 @@ wsk action create cat-delete --kind nodejs:6 action.zip \
 wsk action invoke --blocking --param id 1 cat-delete
 ```
 
-### Create REST API endpoints
+## Create REST API endpoints
 Now that we have our actions, we can create REST URLs to attach to those actions. Create four endpoints using the following commands. This will map an resource endpoint (`/cats`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods and associate it with the corresponding OpenWhisk action you just created.
 
 ```bash
@@ -176,7 +176,7 @@ wsk api-experimental create /v1 /cats delete cat-delete
 ./cat-delete.sh 1
 ```
 
-### Clean up
+## Clean up
 To remove all the API mappings and delete the actions, you can use `./deploy.sh --uninstall` or perform the deletions manually.
 
 ```bash
