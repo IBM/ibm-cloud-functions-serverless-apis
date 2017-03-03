@@ -72,7 +72,6 @@ function install() {
   wsk api-experimental create /v1 /cats delete cat-delete
   cd ../..
 
-
   echo -e "Install Complete"
 }
 

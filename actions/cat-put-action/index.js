@@ -18,56 +18,56 @@
 /**
  * This action updates a Cat by ID in a MySQL Database
  *
- * @param   params.MYSQL_HOSTNAME               MySQL hostname
- * @param   params.MYSQL_USERNAME               MySQL username
- * @param   params.MYSQL_PASSWORD               MySQL password
- * @param   params.MYSQL_DATABASE               MySQL database
- * @param   params.name                         Name of the cat to insert into the table
- * @param   params.color                        Color of the cat to insert into the table
+ * @param   params.MYSQL_HOSTNAME    MySQL hostname
+ * @param   params.MYSQL_USERNAME    MySQL username
+ * @param   params.MYSQL_PASSWORD    MySQL password
+ * @param   params.MYSQL_DATABASE    MySQL database
+ * @param   params.name              Name of the cat to insert into the table
+ * @param   params.color             Color of the cat to insert into the table
 
  * @return  Promise for the MySQL result
  */
 function myAction(params) {
 
-    return new Promise(function(resolve, reject) {
-        console.log('Setting up mysql database');
+  return new Promise(function(resolve, reject) {
+    console.log('Setting up MySQL database');
 
-        var mysql = require('mysql');
-        var connection = mysql.createConnection({
-            host: params.MYSQL_HOSTNAME,
-            user: params.MYSQL_USERNAME,
-            password: params.MYSQL_PASSWORD,
-            database: params.MYSQL_DATABASE
+    var mysql = require('mysql');
+    var connection = mysql.createConnection({
+      host: params.MYSQL_HOSTNAME,
+      user: params.MYSQL_USERNAME,
+      password: params.MYSQL_PASSWORD,
+      database: params.MYSQL_DATABASE
+    });
+
+    console.log('Connecting');
+    connection.connect(function(err) {
+      if (err) {
+        console.error('Error connecting: ' + err.stack);
+        resolve(err);
+        return;
+      }
+    });
+
+    console.log('Querying');
+    var queryText = 'UPDATE cats SET name=?, color=? WHERE id=?';
+
+    connection.query(queryText, [params.name, params.color, params.id], function(error, result) {
+      if (error) {
+        console.log(error);
+        reject(error);
+      } else {
+        console.log(result);
+        resolve({
+          success: true
         });
-
-        console.log('Connecting')
-        connection.connect(function(err) {
-            if (err) {
-                console.error('error connecting: ' + err.stack)
-                resolve(err)
-                return;
-            }
-        });
-
-        console.log('Querying')
-        var queryText = 'UPDATE cats SET name=?, color=? where id=?';
-
-        connection.query(queryText, [params.name, params.color, params.id], function(error, result) {
-            if (error) {
-                console.log(error)
-                reject(error)
-            } else {
-                console.log(result)
-                resolve({
-                    success: true
-                })
-            }
-            console.log('Disconnecting from the mysql database.');
-            connection.destroy();
-        });
+      }
+      console.log('Disconnecting from the MySQL database.');
+      connection.destroy();
+    });
 
 
-    })
+  });
 }
 
 exports.main = myAction;
