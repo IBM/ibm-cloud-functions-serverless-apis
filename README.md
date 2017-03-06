@@ -15,6 +15,7 @@ REST endpoints for each call - corresponding to the HTTP `POST`, `GET`, `PUT`, a
 ![High level diagram](docs/serverless-apis.png)
 
 Steps
+
 1. [Provision MySQL](#1-provision-mysql)
 2. [Create OpenWhisk actions and mappings](#2-create-openwhisk-actions-and-mappings)
 3. [Test API endpoints](#3-test-api-endpoints)
