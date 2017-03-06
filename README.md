@@ -15,11 +15,11 @@ REST endpoints for each call - corresponding to the HTTP `POST`, `GET`, `PUT`, a
 ![High level diagram](docs/serverless-apis.png)
 
 Steps
-1. [Provision MySQL](#provision-mysql)
-2. [Create OpenWhisk actions and mappings](#create-openwhisk-actions-and-mappings)
-3. [Test API endpoints](#test-api-endpoints)
-4. [Delete actions and mappings](#delete-actions-and-mappings)
-5. [Recreate deployment manually](#recreate-deployment-manually)
+1. [Provision MySQL](#1-provision-mysql)
+2. [Create OpenWhisk actions and mappings](#2-create-openwhisk-actions-and-mappings)
+3. [Test API endpoints](#3-test-api-endpoints)
+4. [Delete actions and mappings](#4-delete-actions-and-mappings)
+5. [Recreate deployment manually](#5-recreate-deployment-manually)
 
 # 1. Provision MySQL
 Log into Bluemix and provision a [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/) or a [Compose for MySQL](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/) database instance. ClearDB has a free tier for simple testing, while Compose has tiers for larger workloads.
