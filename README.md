@@ -42,7 +42,7 @@ Copy `template.local.env` to a new file named `local.env` and update the `MYSQL_
 > **Note**: `deploy.sh` will be replaced with [`wskdeploy`](https://github.com/openwhisk/openwhisk-wskdeploy) in the future. `wskdeploy` uses a manifest to deploy declared triggers, actions, and rules to OpenWhisk.
 
 # 3. Test API endpoints
-There are four helper scripts that simulate HTTP API clients to create, get, update and delete entities against the `/v1/cats` endpoint.
+There are four helper scripts that simulate HTTP API clients to create, get, update and delete entities against the `/v1/cat` endpoint.
 
 ```bash
 client/cat-post.sh [name of cat] [color of cat]
@@ -160,19 +160,27 @@ wsk action invoke \
 ```
 
 ## 5.2 Create REST API endpoints
-Now map a resource endpoint (`/cats`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods and associate them with the corresponding OpenWhisk actions.
+Now map a resource endpoint (`/cat`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods and associate them with the corresponding OpenWhisk actions.
 
 ```bash
 # Create
-wsk api-experimental create -n "Cats API" /v1 /cats post cat-post
-wsk api-experimental create /v1 /cats put cat-put
-wsk api-experimental create /v1 /cats get cat-get
-wsk api-experimental create /v1 /cats delete cat-delete
+wsk api-experimental create -n "Cats API" /v1 /cat post cat-post
+wsk api-experimental create /v1 /cat put cat-put
+wsk api-experimental create /v1 /cat get cat-get
+wsk api-experimental create /v1 /cat delete cat-delete
 
 # Test
-client/cat-post.sh Henry Black # POST /v1/cats {}
+
+# POST /v1/cat {"name": "Tarball", "color": "Black"}
+client/cat-post.sh Tarball Black
+
+# GET /v2/cat?id=1
 client/cat-get.sh 1
-client/cat-put.sh 1 Henry Gray
+
+# PUT /v1/cat {"id": 1, "name": "Tarball", "color": "Gray"}
+client/cat-put.sh 1 Tarball Gray
+
+# DELETE /v2/cat?id=1
 client/cat-delete.sh 1
 ```
 
