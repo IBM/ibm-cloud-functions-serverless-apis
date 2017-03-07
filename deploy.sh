@@ -33,7 +33,7 @@ function install() {
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api-experimental create -n "Cats API" /v1 /cats post cat-post
+  wsk api-experimental create -n "Cats API" /v1 /cat post cat-post
   cd ../..
 
   echo "Installing PUT Cat Action"
@@ -45,7 +45,7 @@ function install() {
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api-experimental create /v1 /cats put cat-put
+  wsk api-experimental create /v1 /cat put cat-put
   cd ../..
 
   echo "Installing GET Cat Action"
@@ -57,7 +57,7 @@ function install() {
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api-experimental create /v1 /cats get cat-get
+  wsk api-experimental create /v1 /cat get cat-get
   cd ../..
 
   echo "Installing DELETE Cat Action"
@@ -69,7 +69,7 @@ function install() {
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api-experimental create /v1 /cats delete cat-delete
+  wsk api-experimental create /v1 /cat delete cat-delete
   cd ../..
 
   echo -e "Install Complete"
