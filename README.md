@@ -45,10 +45,17 @@ Copy `template.local.env` to a new file named `local.env` and update the `MYSQL_
 There are four helper scripts that simulate HTTP API clients to create, get, update and delete entities against the `/v1/cat` endpoint.
 
 ```bash
-client/cat-post.sh [name of cat] [color of cat]
-client/cat-get.sh [id] # Returned by cat-post.sh
-client/cat-put.sh [id] [name of cat] [color of cat]
-client/cat-delete.sh [id]
+# POST /v1/cat {"name": "Tarball", "color": "Black"}
+client/cat-post.sh Tarball Black
+
+# GET /v2/cat?id=1 (id returned by cat-post.sh)
+client/cat-get.sh 1
+
+# PUT /v1/cat {"id": 1, "name": "Tarball", "color": "Gray"}
+client/cat-put.sh 1 Tarball Gray
+
+# DELETE /v2/cat?id=1
+client/cat-delete.sh 1
 ```
 
 # 4. Delete actions and mappings
@@ -160,7 +167,7 @@ wsk action invoke \
 ```
 
 ## 5.2 Create REST API endpoints
-Now map a resource endpoint (`/cat`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods and associate them with the corresponding OpenWhisk actions.
+Now map a resource endpoint (`/cat`) to the `GET`, `DELETE`, `PUT`, and `POST` HTTP methods, associate them with the corresponding OpenWhisk actions, and use the client scripts to test.
 
 ```bash
 # Create
