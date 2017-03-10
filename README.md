@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/IBM/openwhisk-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/openwhisk-serverless-apis)
 
-# OpenWhisk 101 - OpenWhisk and Serverless APIs
-Learn how to [create serverless REST APIs](https://github.com/IBM/openwhisk-serverless-apis/wiki) with Apache OpenWhisk on IBM Bluemix. This tutorial will take less than 10 minutes to complete.
+# OpenWhisk Hands-On - OpenWhisk and Serverless APIs
+Learn how to [create serverless REST APIs](https://github.com/IBM/openwhisk-serverless-apis/wiki) with Apache OpenWhisk on IBM Bluemix. This tutorial will take about 10 minutes to complete.
 
 You should have a basic understanding of the OpenWhisk programming model. If not, [try the action, trigger, and rule demo first](https://github.com/IBM/openwhisk-action-trigger-rule). [You'll also need a Bluemix account and the latest OpenWhisk command line tool](docs/OPENWHISK.md).
 
