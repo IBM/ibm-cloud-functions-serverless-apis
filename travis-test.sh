@@ -25,7 +25,7 @@ chmod u+x wsk
 export PATH=$PATH:`pwd`
 
 echo "Configuring CLI from apihost and API key\n"
-wsk property set --apihost openwhisk.ng.bluemix.net --auth $OPEN_WHISK_KEY #OPEN_WHISK_KEY defined in travis-ci console
+wsk property set --apihost openwhisk.ng.bluemix.net --auth $OPENWHISK_KEY > /dev/null 2>&1
 
 echo "Configure local.env"
 touch local.env #Configurations defined in travis-ci console
@@ -39,7 +39,7 @@ export CAT_API_URL=`wsk api-experimental list | tail -1 | awk '{print $5}'`
 echo "Running pythontests"
 python3 --version
 sudo -H pip install 'requests[security]'
-python travis-test.py 
+python travis-test.py
 
 echo "Uninstalling wsk actions, etc."
 ./deploy.sh --uninstall
