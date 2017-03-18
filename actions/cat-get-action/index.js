@@ -60,7 +60,9 @@ function myAction(params) {
         resolve(result[0]);
       }
       console.log('Disconnecting from the MySQL database.');
-      connection.destroy();
+      connection.end(function(err) {
+         console.log("Error on connection end:" + err.stack);
+      });
     });
 
 
