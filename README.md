@@ -1,20 +1,26 @@
 [![Build Status](https://travis-ci.org/IBM/openwhisk-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/openwhisk-serverless-apis)
 
-# OpenWhisk Hands On - OpenWhisk and Serverless APIs
-Learn how to [create serverless REST APIs](https://github.com/IBM/openwhisk-serverless-apis/wiki) with Apache OpenWhisk on IBM Bluemix. This tutorial will take about 10 minutes to complete. For more background on the use case, check out [the developer story](https://developer.ibm.com/accelerate/journey/build-serverless-api-handlers/).
+# Serverless APIs with OpenWhisk
+This project shows the power of serverless, event-driven architectures to execute code that scales automatically in response to demand from HTTP REST API calls. No resources are consumed until the API endpoints are called. When they are called, resources are provisioned to exactly match the current load.
 
-You should have a basic understanding of the OpenWhisk programming model. If not, [try the action, trigger, and rule demo first](https://github.com/IBM/openwhisk-action-trigger-rule). You'll also need a Bluemix account and the latest [OpenWhisk command line tool (`wsk`) installed and on your PATH](https://github.com/IBM/openwhisk-action-trigger-rule/blob/master/docs/OPENWHISK.md).
+It shows four OpenWhisk actions (written in JavaScript) that write and read data in a MySQL database. This demonstrates how actions can work with supporting data services and execute logic in response to HTTP requests.
 
-When complete, move on to more complex serverless applications, such as those named _OpenWhisk 201_ or tagged as [_openwhisk-use-cases_](https://github.com/search?q=topic%3Aopenwhisk-use-cases+org%3AIBM&type=Repositories).
+One action is mapped to HTTP POST requests. It inserts the supplied cat name and color parameters into the database. A second action is mapped to PUT requests to update those fields for an existing cat. A third action is mapped to GET requests that return specific cat data. A fourth action deletes a given cat data.
 
-# OpenWhisk Serverless REST APIs
-This example provides a simple CRUD (create, read, update, delete) interface for an entity that represents a cat with an id, name, and color.
+The Node.js runtime on Bluemix provides a built-in whitelist of NPM modules. This demo also highlights how additional Node.js dependencies – such as the MySQL client – can be packaged in a ZIP file with custom actions to provide a high level of extensibility.
 
-REST endpoints for each call - corresponding to the HTTP `POST`, `GET`, `PUT`, and `DELETE` methods - are mapped to autoscaling OpenWhisk actions that modify cat state in a MySQL database.
+![Sample Architecture](docs/arch_buildserverless.png)
 
-![High level diagram](docs/serverless-apis.png)
+## Included components
 
-Steps
+- OpenWhisk
+- ClearDB or Compose (MySQL)
+
+## Prerequisite
+
+You should have a basic understanding of the OpenWhisk programming model. If not, [try the action, trigger, and rule demo first](https://github.com/IBM/openwhisk-action-trigger-rule). Also, you'll need a Bluemix account and the latest [OpenWhisk command line tool (`wsk`) installed and on your PATH](https://github.com/IBM/openwhisk-action-trigger-rule/blob/master/docs/OPENWHISK.md).
+
+## Steps
 
 1. [Provision MySQL](#1-provision-mysql)
 2. [Create OpenWhisk actions and mappings](#2-create-openwhisk-actions-and-mappings)
