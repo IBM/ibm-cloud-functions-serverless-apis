@@ -29,56 +29,76 @@
  */
 function myAction(params) {
 
-  return new Promise(function(resolve, reject) {
-    console.log('Setting up MySQL database');
+  var returnValue = {};
 
-    var mysql = require('mysql');
-    var connection = mysql.createConnection({
-      host: params.MYSQL_HOSTNAME,
-      user: params.MYSQL_USERNAME,
-      password: params.MYSQL_PASSWORD,
-      database: params.MYSQL_DATABASE
-    });
+  console.log('Setting up MySQL database');
+  var mysql = require('mysql');
+  var connection = mysql.createConnection({
+    host: params.MYSQL_HOSTNAME,
+    user: params.MYSQL_USERNAME,
+    password: params.MYSQL_PASSWORD,
+    database: params.MYSQL_DATABASE
+  });
 
+  console.log('Connecting');
+  connection.connect(function(err) {
+    if (err) {
+      console.error('Error connecting: ' + err.stack);
+      return {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        statusCode: 500,
+        body: '{ error: "Connection error." }'
+      };
+    }
+  });
 
-    console.log('Connecting');
-    connection.connect(function(err) {
-      if (err) {
-        console.error('Error connecting: ' + err.stack);
-        resolve(err);
-        return;
+  console.log('Querying');
+
+  connection.query('CREATE TABLE IF NOT EXISTS `cats` (`id` INT AUTO_INCREMENT PRIMARY KEY, `name` VARCHAR(256) NOT NULL, `color` VARCHAR(256) NOT NULL)', function(err, result) {
+    if (err) {
+      console.log("Error creating the cats table...");
+      returnValue = {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        statusCode: 500,
+        body: '{ error: "SQL error." }'
+      };
+    }
+
+    var queryText = 'INSERT INTO cats (name, color) VALUES(?, ?)';
+
+    connection.query(queryText, [params.name, params.color], function(error, result) {
+      if (error) {
+        console.log(error);
+        returnValue = {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          statusCode: 500,
+          body: '{ error: "SQL error." }'
+        };
+      } else {
+        returnValue = {
+          statusCode: 201,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: '{ success: "' + result.insertId + '" }'
+        };
       }
-    });
-
-    console.log('Querying');
-
-    connection.query('CREATE TABLE IF NOT EXISTS `cats` (`id` INT AUTO_INCREMENT PRIMARY KEY, `name` VARCHAR(256) NOT NULL, `color` VARCHAR(256) NOT NULL)', function(err, result) {
-      if (err) {
-        console.log("Error creating the cats table...");
-      }
-
-      var queryText = 'INSERT INTO cats (name, color) VALUES(?, ?)';
-
-      connection.query(queryText, [params.name, params.color], function(error, result) {
-        if (error) {
-          console.log(error);
-          reject(error);
-        } else {
-          resolve({
-            success: true,
-            id: result.insertId
-          });
-        }
-        console.log('Disconnecting from the MySQL database.');
-        connection.end(function(err) {
-           console.log("Error on connection end:" + err.stack);
-        });
+      console.log('Disconnecting from the MySQL database.');
+      connection.end(function(err) {
+        console.log("Error on connection end: " + err.stack);
       });
-
-
     });
 
   });
+
+  return returnValue;
+
 }
 
 exports.main = myAction;
