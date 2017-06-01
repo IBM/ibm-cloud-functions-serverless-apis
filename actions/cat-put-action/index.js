@@ -29,61 +29,42 @@
  */
 function myAction(params) {
 
-  var returnValue = {};
-
-  console.log('Setting up MySQL database');
-  var mysql = require('mysql');
-  var connection = mysql.createConnection({
-    host: params.MYSQL_HOSTNAME,
-    user: params.MYSQL_USERNAME,
-    password: params.MYSQL_PASSWORD,
-    database: params.MYSQL_DATABASE
-  });
-
-  console.log('Connecting');
-  connection.connect(function(err) {
-    if (err) {
-      console.error('Error connecting: ' + err.stack);
-      return {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        statusCode: 500,
-        body: '{ error: "Connection error." }'
-      };
-    }
-  });
-
-  console.log('Querying');
-  var queryText = 'UPDATE cats SET name=?, color=? WHERE id=?';
-
-  connection.query(queryText, [params.name, params.color, params.id], function(error, result) {
-    if (error) {
-      console.log(error);
-      returnValue = {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        statusCode: 500,
-        body: '{ error: "SQL error." }'
-      };
-    } else {
-      console.log(result);
-      returnValue = {
+  return new Promise(function(resolve, reject) {
+    console.log('Connecting to MySQL database');
+    var mysql = require('promise-mysql');
+    var connection;
+    mysql.createConnection({
+      host: params.MYSQL_HOSTNAME,
+      user: params.MYSQL_USERNAME,
+      password: params.MYSQL_PASSWORD,
+      database: params.MYSQL_DATABASE
+    }).then(function(conn) {
+      connection = conn;
+      console.log('Updating the cat');
+      var queryText = 'UPDATE cats SET name=?, color=? WHERE id=?';
+      var update = connection.query(queryText, [params.name, params.color, params.id]);
+      connection.end();
+      return update;
+    }).then(function(update) {
+      resolve({
         statusCode: 200,
         headers: {
           'Content-Type': 'application/json'
         },
         body: '{ success: "Cat updated." }'
-      };
-    }
-    console.log('Disconnecting from the MySQL database.');
-    connection.end(function(err) {
-      console.log("Error on connection end: " + err.stack);
+      });
+    }).catch(function(error) {
+      if (connection && connection.end) connection.end();
+      console.log(error);
+      reject({
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        statusCode: 500,
+        body: '{ error: "Error." }'
+      });
     });
   });
-
-  return returnValue;
 
 }
 

@@ -7,4 +7,7 @@ fi
 
 CAT_API_URL=`wsk api list | tail -1 | awk '{print $5}'`
 
-curl -X POST -d "{\"name\":\"$1\",\"color\":\"$2\"}" $CAT_API_URL
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"name":"'$1'","color":"'$2'"}' \
+  $CAT_API_URL

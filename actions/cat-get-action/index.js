@@ -28,61 +28,53 @@
  */
 function myAction(params) {
 
-  var returnValue = {};
-
-  console.log('Setting up MySQL database');
-  var mysql = require('mysql');
-  var connection = mysql.createConnection({
-    host: params.MYSQL_HOSTNAME,
-    user: params.MYSQL_USERNAME,
-    password: params.MYSQL_PASSWORD,
-    database: params.MYSQL_DATABASE
-  });
-
-  console.log('Connecting');
-  connection.connect(function(err) {
-    if (err) {
-      console.error('Error connecting: ' + err.stack);
-      return {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        statusCode: 500,
-        body: '{ error: "Connection error." }'
-      };
-    }
-  });
-
-  console.log('Querying');
-  var queryText = 'SELECT * FROM cats WHERE id=?';
-
-  connection.query(queryText, [params.id], function(error, result) {
-    if (error) {
-      console.log(error);
-      returnValue = {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        statusCode: 500,
-        body: '{ error: "SQL error." }'
-      };
-    } else {
+  return new Promise(function(resolve, reject) {
+    console.log('Connecting to MySQL database');
+    var mysql = require('promise-mysql');
+    var connection;
+    mysql.createConnection({
+      host: params.MYSQL_HOSTNAME,
+      user: params.MYSQL_USERNAME,
+      password: params.MYSQL_PASSWORD,
+      database: params.MYSQL_DATABASE
+    }).then(function(conn) {
+      connection = conn;
+      console.log('Querying');
+      var queryText = 'SELECT * FROM cats WHERE id=?';
+      var result = connection.query(queryText, [params.id]);
+      connection.end();
+      return result;
+    }).then(function(result) {
       console.log(result);
-      returnValue = {
-        statusCode: 200,
+      if (result[0]) {
+        resolve({
+          statusCode: 200,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: result[0]
+        });
+      } else {
+        reject({
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          statusCode: 404,
+          body: '{ error: "Not found." }'
+        });
+      }
+    }).catch(function(error) {
+      if (connection && connection.end) connection.end();
+      console.log(error);
+      reject({
         headers: {
           'Content-Type': 'application/json'
         },
-        body: '{ success: "' + result[0] + '" }'
-      };
-    }
-    console.log('Disconnecting from the MySQL database.');
-    connection.end(function(err) {
-      console.log("Error on connection end: " + err.stack);
+        statusCode: 500,
+        body: '{ error: "Error." }'
+      });
     });
   });
-
-  return returnValue;
 
 }
 
