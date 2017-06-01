@@ -54,7 +54,7 @@ function myAction(params) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: '{ success: ' + insert.insertId + ' }'
+        body: '{ id: ' + insert.insertId + ' }'
       });
     }).catch(function(error) {
       if (connection && connection.end) connection.end();

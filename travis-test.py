@@ -43,7 +43,7 @@ def addHenry(color):
 	response = requests.post(CAT_API_URL, json=catToAdd)
 	result = json.loads(response.text)
 
-	if response.status_code != 200 or not 'id' in result:
+	if response.status_code != 201 or not 'id' in result:
 	   	print("Failed to add Henry. Response: " + response.text)
 	   	exit(1)
 
