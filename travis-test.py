@@ -40,7 +40,7 @@ def main():
 def addHenry(color):
 	print("Add Henry, the black cat. (POST)")
 	catToAdd = {'name': 'Henry', 'color': color}
-	response = requests.post(CAT_API_URL, data=json.dumps(catToAdd))
+	response = requests.post(CAT_API_URL, json=catToAdd)
 	result = json.loads(response.text)
 
 	if response.status_code != 200 or not 'id' in result:
@@ -68,7 +68,7 @@ def checkHenry(result, color):
 def updateHenry(result, color):
 	print("Oops, Henry isn't black, he's grey! (PUT)")
 	catToUpdate = {'name': 'Henry', 'color': color, 'id': str(catID)}
-	response = requests.put(CAT_API_URL, data=json.dumps(catToUpdate))
+	response = requests.put(CAT_API_URL, json=catToUpdate)
 	result = json.loads(response.text)
 
 	if response.status_code != 200:
@@ -98,5 +98,3 @@ def deleteHenry(result):
 # 	print("success")
 
 main()
-
-
