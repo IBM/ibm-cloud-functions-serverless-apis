@@ -51,7 +51,9 @@ function myAction(params) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: '{ success: "Cat deleted." }'
+        body: {
+          success: "Cat deleted."
+        }
       });
     }).catch(function(error) {
       if (connection && connection.end) connection.end();
@@ -61,7 +63,9 @@ function myAction(params) {
           'Content-Type': 'application/json'
         },
         statusCode: 500,
-        body: '{ error: "Error." }'
+        body: {
+          error: "Error."
+        }
       });
     });
   });

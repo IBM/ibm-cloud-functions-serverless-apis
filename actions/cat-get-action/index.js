@@ -60,7 +60,9 @@ function myAction(params) {
             'Content-Type': 'application/json'
           },
           statusCode: 404,
-          body: '{ error: "Not found." }'
+          body: {
+            error: "Not found."
+          }
         });
       }
     }).catch(function(error) {
@@ -71,7 +73,9 @@ function myAction(params) {
           'Content-Type': 'application/json'
         },
         statusCode: 500,
-        body: '{ error: "Error." }'
+        body: {
+          error: "Error."
+        }
       });
     });
   });

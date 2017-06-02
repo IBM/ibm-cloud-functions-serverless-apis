@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
-
 # Load configuration variables
 source local.env
 
@@ -24,11 +22,15 @@ function usage() {
 }
 
 function install() {
+
+  # Exit if any command fails
+  set -e
+
   echo -e "Installing OpenWhisk actions, triggers, and rules for openwhisk-serverless-apis..."
 
   echo -e "Setting Bluemix credentials and logging in to provision API Gateway"
 
-  # Edit these to match your Bluemix credentials (needed for the API Gateway)
+  # Edit these to match your Bluemix credentials (needed to provision the API Gateway)
   wsk bluemix login \
     --user $BLUEMIX_USERNAME \
     --password $BLUEMIX_PASSWORD \
