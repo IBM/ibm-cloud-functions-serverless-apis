@@ -36,7 +36,7 @@ def main():
     henry = updateHenry(henry, "Grey")
     checkHenry(henry, "Grey")
     deleteHenry(henry)
-    checkDeadHenry(henry)
+    checkLostHenry(henry)
 
 
 def addHenry(color):
@@ -52,7 +52,6 @@ def addHenry(color):
         exit(1)
 
     print("success")
-    print(result)
     return henry
 
 
@@ -97,17 +96,17 @@ def deleteHenry(result):
 
     print("success")
 
- def checkDeadHenry(result):
- 	print("Verify that Henry is really lost (GET)")
- 	response=requests.get(henryURL)
- 	result = json.loads(response.text)
+def checkLostHenry(result):
+    print("Verify that Henry is really lost (GET)")
+    response=requests.get(henryURL)
+    result = json.loads(response.text)
     henry = result["body"]
 
- 	if ('name' in henry):
- 	   	print("Failed to verify Henry is really lost. Response: " + response.text)
- 	   	exit(1)
+    if ('name' in henry):
+        print("Failed to verify Henry is really lost. Response: " + response.text)
+        exit(1)
 
- 	print("success")
+    print("success")
 
 
 main()
