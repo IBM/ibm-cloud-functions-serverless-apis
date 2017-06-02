@@ -5,6 +5,9 @@ if [ "$#" -ne 3 ]; then
     exit
 fi
 
-CAT_API_URL=`wsk api-experimental list | tail -1 | awk '{print $5}'`
+CAT_API_URL=`wsk api list | tail -1 | awk '{print $5}'`
 
-curl -X PUT -d "{\"id\":\"$1\", \"name\":\"$2\", \"color\":\"$3\"}" $CAT_API_URL
+curl -X PUT \
+  -H "Content-Type: application/json" \
+  -d '{"id":"'$1'","name":"'$2'","color":"'$3'"}' \
+  $CAT_API_URL

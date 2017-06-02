@@ -30,55 +30,49 @@
 function myAction(params) {
 
   return new Promise(function(resolve, reject) {
-    console.log('Setting up MySQL database');
-
-    var mysql = require('mysql');
-    var connection = mysql.createConnection({
+    console.log('Connecting to MySQL database');
+    var mysql = require('promise-mysql');
+    var connection;
+    mysql.createConnection({
       host: params.MYSQL_HOSTNAME,
       user: params.MYSQL_USERNAME,
       password: params.MYSQL_PASSWORD,
       database: params.MYSQL_DATABASE
-    });
-
-
-    console.log('Connecting');
-    connection.connect(function(err) {
-      if (err) {
-        console.error('Error connecting: ' + err.stack);
-        resolve(err);
-        return;
-      }
-    });
-
-    console.log('Querying');
-
-    connection.query('CREATE TABLE IF NOT EXISTS `cats` (`id` INT AUTO_INCREMENT PRIMARY KEY, `name` VARCHAR(256) NOT NULL, `color` VARCHAR(256) NOT NULL)', function(err, result) {
-      if (err) {
-        console.log("Error creating the cats table...");
-      }
-
+    }).then(function(conn) {
+      connection = conn;
+      console.log('Creating table if it does not exist');
+      return connection.query('CREATE TABLE IF NOT EXISTS `cats` (`id` INT AUTO_INCREMENT PRIMARY KEY, `name` VARCHAR(256) NOT NULL, `color` VARCHAR(256) NOT NULL)');
+    }).then(function() {
+      console.log('Inserting the cat');
       var queryText = 'INSERT INTO cats (name, color) VALUES(?, ?)';
-
-      connection.query(queryText, [params.name, params.color], function(error, result) {
-        if (error) {
-          console.log(error);
-          reject(error);
-        } else {
-          resolve({
-            success: true,
-            id: result.insertId
-          });
+      var insert = connection.query(queryText, [params.name, params.color]);
+      connection.end();
+      return insert;
+    }).then(function(insert) {
+      resolve({
+        statusCode: 201,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          id: insert.insertId
         }
-        console.log('Disconnecting from the MySQL database.');
-        connection.end(function(err) {
-           console.log("Error on connection end:" + err.stack);
-        });
       });
-
-
+    }).catch(function(error) {
+      if (connection && connection.end) connection.end();
+      console.log(error);
+      reject({
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        statusCode: 500,
+        body: {
+          error: "Error."
+        }
+      });
     });
-
   });
+
 }
 
 exports.main = myAction;

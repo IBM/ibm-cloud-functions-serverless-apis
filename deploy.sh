@@ -22,54 +22,75 @@ function usage() {
 }
 
 function install() {
+
+  # Exit if any command fails
+  set -e
+
   echo -e "Installing OpenWhisk actions, triggers, and rules for openwhisk-serverless-apis..."
 
+  echo -e "Setting Bluemix credentials and logging in to provision API Gateway"
+
+  # Edit these to match your Bluemix credentials (needed to provision the API Gateway)
+  wsk bluemix login \
+    --user $BLUEMIX_USERNAME \
+    --password $BLUEMIX_PASSWORD \
+    --namespace $BLUEMIX_NAMESPACE
+
+  echo -e "\n"
   echo "Installing POST Cat Action"
   cd actions/cat-post-action
   npm install
   zip -rq action.zip *
-  wsk action create cat-post --kind nodejs:6 action.zip \
+  wsk action create cat-post \
+    --kind nodejs:6 action.zip \
+    --web true \
     --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api-experimental create -n "Cats API" /v1 /cat post cat-post
+  wsk api create -n "Cats API" /v1 /cat POST cat-post
   cd ../..
 
   echo "Installing PUT Cat Action"
   cd actions/cat-put-action
   npm install
   zip -rq action.zip *
-  wsk action create cat-put --kind nodejs:6 action.zip \
+  wsk action create cat-put \
+    --kind nodejs:6 action.zip \
+    --web true \
     --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api-experimental create /v1 /cat put cat-put
+  wsk api create /v1 /cat PUT cat-put
   cd ../..
 
   echo "Installing GET Cat Action"
   cd actions/cat-get-action
   npm install
   zip -rq action.zip *
-  wsk action create cat-get --kind nodejs:6 action.zip \
+  wsk action create cat-get \
+    --kind nodejs:6 action.zip \
+    --web true \
     --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api-experimental create /v1 /cat get cat-get
+  wsk api create /v1 /cat GET cat-get
   cd ../..
 
   echo "Installing DELETE Cat Action"
   cd actions/cat-delete-action
   npm install
   zip -rq action.zip *
-  wsk action create cat-delete --kind nodejs:6 action.zip \
+  wsk action create cat-delete \
+    --kind nodejs:6 action.zip \
+    --web true \
     --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api-experimental create /v1 /cat delete cat-delete
+  wsk api create /v1 /cat DELETE cat-delete
   cd ../..
 
   echo -e "Install Complete"
@@ -79,7 +100,7 @@ function uninstall() {
   echo -e "Uninstalling..."
 
   echo "Removing API actions..."
-  wsk api-experimental delete /v1
+  wsk api delete /v1
 
   echo "Removing actions..."
   wsk action delete cat-post
@@ -95,6 +116,8 @@ function showenv() {
   echo -e MYSQL_USERNAME="$MYSQL_USERNAME"
   echo -e MYSQL_PASSWORD="$MYSQL_PASSWORD"
   echo -e MYSQL_DATABASE="$MYSQL_DATABASE"
+  echo -e BLUEMIX_USERNAME="$BLUEMIX_USERNAME"
+  echo -e BLUEMIX_PASSWORD="$BLUEMIX_PASSWORD"
 }
 
 case "$1" in

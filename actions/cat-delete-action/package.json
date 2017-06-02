@@ -8,7 +8,7 @@
 	},
 	"version": "1.0.0",
 	"main": "index.js",
-	"dependencies": {
-		"mysql": "2.13.0"
+  "dependencies": {
+		"promise-mysql": "3.0.1"
 	}
 }

@@ -22,81 +22,91 @@ from subprocess import call
 CAT_API_URL = os.environ['CAT_API_URL']
 print "CAT_API_URL is: " + CAT_API_URL
 
+
 def main():
-	global catID
-	global henryURL
+    global catID
+    global henryURL
 
-	henry = addHenry("Black")
+    henry = addHenry("Black")
 
-	catID = henry["id"]
-	henryURL = CAT_API_URL+"?id=" + str(catID)
+    catID = henry["id"]
+    henryURL = CAT_API_URL + "?id=" + str(catID)
 
-	# checkHenry(henry, "Black")
-	henry = updateHenry(henry, "Grey")
-	checkHenry(henry, "Grey")
-	deleteHenry(henry)
-	# checkDeadHenry(henry) Spark (free) plan for ClearDB only allows 4 connections
+    checkHenry(henry, "Black")
+    henry = updateHenry(henry, "Grey")
+    checkHenry(henry, "Grey")
+    deleteHenry(henry)
+    checkLostHenry(henry)
+
 
 def addHenry(color):
-	print("Add Henry, the black cat. (POST)")
-	catToAdd = {'name': 'Henry', 'color': color}
-	response = requests.post(CAT_API_URL, data=json.dumps(catToAdd))
-	result = json.loads(response.text)
+    print("Add Henry, the black cat. (POST)")
+    catToAdd = {'name': 'Henry', 'color': color}
+    response = requests.post(CAT_API_URL, json=catToAdd)
+    result = json.loads(response.text)
+    henry = result["body"]
 
-	if response.status_code != 200 or not 'id' in result:
-	   	print("Failed to add Henry. Response: " + response.text)
-	   	exit(1)
+    # Should technically be a 201
+    if response.status_code != 200 or not 'id' in henry:
+        print("Failed to add Henry. Response: " + response.text)
+        exit(1)
 
-	print("success")
-	return result
+    print("success")
+    return henry
+
 
 def checkHenry(result, color):
-	print("Verify that Henry has been added/updated (GET)")
-	response=requests.get(henryURL)
-	result = json.loads(response.text)
+    print("Verify that Henry has been added/updated (GET)")
+    response = requests.get(henryURL)
+    result = json.loads(response.text)
+    henry = result["body"]
 
-	if response.status_code != 200 or \
-	   not 'id' in result or \
-	   result["name"] != "Henry" or \
-	   result["color"] != color or \
-	   result["id"] != catID:
-	   	print("Failed to verify Henry's addition/update. Response: " + response.text)
-	   	exit(1)
+    if response.status_code != 200 or \
+       not 'id' in henry or \
+       henry["name"] != "Henry" or \
+       henry["color"] != color or \
+       henry["id"] != catID:
+        print("Failed to verify Henry's addition/update. Response: " + response.text)
+        exit(1)
 
-	print("success")
+    print("success")
+
 
 def updateHenry(result, color):
-	print("Oops, Henry isn't black, he's grey! (PUT)")
-	catToUpdate = {'name': 'Henry', 'color': color, 'id': str(catID)}
-	response = requests.put(CAT_API_URL, data=json.dumps(catToUpdate))
-	result = json.loads(response.text)
+    print("Oops, Henry isn't black, he's grey! (PUT)")
+    catToUpdate = {'name': 'Henry', 'color': color, 'id': str(catID)}
+    response = requests.put(CAT_API_URL, json=catToUpdate)
+    result = json.loads(response.text)
+    henry = result["body"]
 
-	if response.status_code != 200:
-	   	print("Failed to update Henry: " + response.text)
-	   	exit(1)
+    if response.status_code != 200:
+        print("Failed to update Henry: " + response.text)
+        exit(1)
 
-	print("success")
-	return result
+    print("success")
+    return henry
+
 
 def deleteHenry(result):
-	print("Henry, the grey cat ran out of lives (DELETE)")
-	response=requests.delete(henryURL)
-	if response.status_code != 200:
-	   	print("Failed to delete Henry. Response: " + response.text)
-	   	exit(1)
+    print("Henry, the grey cat is lost (DELETE)")
+    response = requests.delete(henryURL)
+    if response.status_code != 200:
+        print("Failed to delete Henry. Response: " + response.text)
+        exit(1)
 
-	print("success")
+    print("success")
 
-# def checkDeadHenry(result):
-# 	print("Verify that Henry is really dead (GET)")
-# 	response=requests.get(henryURL)
-# 	result = json.loads(response.text)
-# 	if ('name' in result):
-# 	   	print("Failed to verify Henry is really dead. Response: " + response.text)
-# 	   	exit(1)
+def checkLostHenry(result):
+    print("Verify that Henry is really lost (GET)")
+    response=requests.get(henryURL)
+    result = json.loads(response.text)
+    henry = result["body"]
 
-# 	print("success")
+    if ('name' in henry):
+        print("Failed to verify Henry is really lost. Response: " + response.text)
+        exit(1)
+
+    print("success")
+
 
 main()
-
-

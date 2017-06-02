@@ -5,6 +5,6 @@ if [ "$#" -ne 1 ]; then
     exit
 fi
 
-CAT_API_URL=`wsk api-experimental list | tail -1 | awk '{print $5}'`
+CAT_API_URL=`wsk api list | tail -1 | awk '{print $5}'`
 
 curl -X DELETE "${CAT_API_URL}?id=${1}"

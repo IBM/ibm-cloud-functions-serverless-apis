@@ -181,10 +181,10 @@ Now map a resource endpoint (`/cat`) to the `GET`, `DELETE`, `PUT`, and `POST` H
 
 ```bash
 # Create
-wsk api-experimental create -n "Cats API" /v1 /cat post cat-post
-wsk api-experimental create /v1 /cat put cat-put
-wsk api-experimental create /v1 /cat get cat-get
-wsk api-experimental create /v1 /cat delete cat-delete
+wsk api create -n "Cats API" /v1 /cat post cat-post
+wsk api create /v1 /cat put cat-put
+wsk api create /v1 /cat get cat-get
+wsk api create /v1 /cat delete cat-delete
 
 # Test
 
@@ -205,7 +205,7 @@ client/cat-delete.sh 1
 Remove the API mappings and delete the actions.
 
 ```bash
-wsk api-experimental delete /v1
+wsk api delete /v1
 wsk action delete cat-post
 wsk action delete cat-put
 wsk action delete cat-get
