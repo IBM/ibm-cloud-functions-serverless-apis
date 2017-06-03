@@ -7,7 +7,7 @@ It shows four OpenWhisk actions (written in JavaScript) that write and read data
 
 One action is mapped to HTTP POST requests. It inserts the supplied cat name and color parameters into the database. A second action is mapped to PUT requests to update those fields for an existing cat. A third action is mapped to GET requests that return specific cat data. A fourth action deletes a given cat data.
 
-The Node.js runtime on Bluemix provides a built-in whitelist of NPM modules. This demo also highlights how additional Node.js dependencies – such as the MySQL client – can be packaged in a ZIP file with custom actions to provide a high level of extensibility.
+The Node.js runtime on Bluemix provides a built-in whitelist of npm modules. This demo also highlights how additional Node.js dependencies – such as the MySQL client – can be packaged in a ZIP file with custom actions to provide a high level of extensibility.
 
 ![Sample Architecture](docs/arch_buildserverless.png)
 
@@ -84,7 +84,7 @@ Create four actions to manage cat data, one for each method (POST, PUT, GET, and
 > **Note**: There are a [number of built-in packages ](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments) available in the OpenWhisk Node.js runtime environment. If you need additional packages, you can upload them in a ZIP file along with your action file. More information on the single file versus zipped archive approaches is available in the [getting started guide](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action).
 
 ### 5.1.1 The cat create action
-The JavaScript code for the POST action is in `/actions/cat-post-action/index.js`. This function depends on the `mysql` client NPM package which we need to connect to the database. Install the package using `npm install` (which parses `package.json`) and create a ZIP file that includes both your application and its dependencies.
+The JavaScript code for the POST action is in `/actions/cat-post-action/index.js`. This function depends on the `mysql` client npm package which we need to connect to the database. Install the package using `npm install` (which parses `package.json`) and create a ZIP file that includes both your application and its dependencies.
 ```bash
   cd actions/cat-post-action
   npm install
