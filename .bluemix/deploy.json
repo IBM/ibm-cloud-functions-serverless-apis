@@ -1,0 +1,171 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Serverless APIs with OpenWhisk Toolchain Deployment to Bluemix",
+    "description": "Serverless APIs with OpenWhisk toolchain",
+    "longDescription": "Information entered here will be used at deployment time.",
+    "type": "object",
+    "properties": {
+        "deploy-region": {
+            "description": "Deploy to this Bluemix Region",
+            "type": "string"
+        },
+        "deploy-org": {
+            "description": "Deploy to this Bluemix Organization",
+            "type": "string"
+        },
+        "deploy-space": {
+            "description": "Deploy to this space",
+            "type": "string"
+        },
+        "openwhisk-api-endpoint": {
+            "description": "OpenWhisk API endpoint",
+            "type": "string"
+        },
+        "openwhisk-auth-key": {
+            "description": "OpenWhisk authorization key: copy the authorization key from https://console.ng.bluemix.net/openwhisk/learn/cli",
+            "type": "password"
+        },
+        "mysql-hostname": {
+            "description": "MySQL hostname, copy from Bluemix MySQL instance credentials",
+            "type": "string"
+        },
+        "mysql-username": {
+            "description": "MySQL username, copy from Bluemix MySQL instance credentials",
+            "type": "string"
+        },
+        "mysql-password": {
+            "description": "MySQL password, copy from Bluemix MySQL instance credentials",
+            "type": "password"
+        },
+        "mysql-database": {
+            "description": "MySQL database, copy from Bluemix MySQL instance credentials",
+            "type": "string"
+        },
+        "bluemix-username": {
+            "description": "Bluemix user name",
+            "type": "string"
+        },
+        "bluemix-password": {
+            "description": "Bluemix password",
+            "type": "string"
+        },
+        "bluemix-namespace": {
+            "description": "Bluemix namespace (organization_space)",
+            "type": "string"
+        }
+    },
+    "required": [
+        "deploy-region",
+        "deploy-org",
+        "deploy-space",
+        "openwhisk-auth-key",
+        "openwhisk-api-endpoint",
+        "mysql-hostname",
+        "mysql-username",
+        "mysql-password",
+        "mysql-database",
+        "bluemix-username",
+        "bluemix-password",
+        "bluemix-namespace"
+    ],
+    "form": [
+        {
+            "type": "validator",
+            "url": "/devops/setup/bm-helper/helper.html"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "OpenWhisk API Endpoint",
+            "key": "openwhisk-api-endpoint"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "OpenWhisk Auth Key",
+            "key": "openwhisk-auth-key"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "MySQL Hostname",
+            "key": "mysql-hostname"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "MySQL Username",
+            "key": "mysql-username"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "MySQL Password",
+            "key": "mysql-password"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "MySQL Database",
+            "key": "mysql-database"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "Bluemix Username",
+            "key": "bluemix-username"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "Bluemix Password",
+            "key": "bluemix-password"
+        },
+        {
+            "type": "text",
+            "readonly": false,
+            "title": "Bluemix Namespace (organization_space)",
+            "key": "bluemix-namespace"
+        },
+        {
+            "type": "table",
+            "columnCount": 4,
+            "widths": ["15%", "28%", "28%", "28%"],
+            "items": [
+                {
+                    "type": "label",
+                    "title": ""
+                },
+                {
+                    "type": "label",
+                    "title": "Region"
+                },
+                {
+                    "type": "label",
+                    "title": "Organization"
+                },
+                {
+                    "type": "label",
+                    "title": "Space"
+                },
+                {
+                    "type": "label",
+                    "title": "Deploy to"
+                },
+                {
+                    "type": "select",
+                    "key": "deploy-region"
+                },
+                {
+                    "type": "select",
+                    "key": "deploy-org"
+                },
+                {
+                    "type": "select",
+                    "key": "deploy-space",
+                    "readonly": false
+                }
+            ]
+        }
+    ]
+}
