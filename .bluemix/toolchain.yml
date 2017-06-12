@@ -51,7 +51,7 @@ deploy:
     mysql-hostname: ""
     mysql-username: ""
     mysql-password: ""
-    mysql-password: ""
+    mysql-database: ""
     bluemix-username: ""
     bluemix-password: ""
     bluemix-namespace: ""
