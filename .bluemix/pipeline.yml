@@ -43,7 +43,7 @@ stages:
       region_id: ${REGION}
       organization: ${ORG}
       space: ${SPACE}
-      application: messagehubdataprocessing
+      application: serverlessapis
     script: |+
       #!/bin/bash
 
