@@ -20,19 +20,19 @@ stages:
     type: text
   - name: MYSQL_USERNAME
     value: ${MYSQL_USERNAME}
-    type: text
+    type: secure
   - name: MYSQL_PASSWORD
     value: ${MYSQL_PASSWORD}
-    type: text
+    type: secure
   - name: MYSQL_DATABASE
     value: ${MYSQL_DATABASE}
-    type: secure
+    type: text
   - name: BLUEMIX_USERNAME
     value: ${BLUEMIX_USERNAME}
     type: text
   - name: BLUEMIX_PASSWORD
     value: ${BLUEMIX_PASSWORD}
-    type: text
+    type: secure
   - name: BLUEMIX_NAMESPACE
     value: ${BLUEMIX_NAMESPACE}
     type: text
@@ -77,7 +77,7 @@ stages:
         --namespace $BLUEMIX_NAMESPACE
 
       echo "Creating a package (here used as a namespace for shared environment variables)"
-      wsk package create cat \
+      ./wsk package create cat \
         --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
         --param "MYSQL_USERNAME" $MYSQL_USERNAME \
         --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
@@ -87,40 +87,40 @@ stages:
       cd actions/cat-post-action
       npm install
       zip -rq action.zip *
-      wsk action create cat/cat-post \
+      ./wsk action create cat/cat-post \
         --kind nodejs:6 action.zip \
         --web true
-      wsk api create -n "Cats API" /v1 /cat POST cat/cat-post
+      ./wsk api create -n "Cats API" /v1 /cat POST cat/cat-post
       cd ../..
 
       echo "Installing PUT Cat Action"
       cd actions/cat-put-action
       npm install
       zip -rq action.zip *
-      wsk action create cat/cat-put \
+      ./wsk action create cat/cat-put \
         --kind nodejs:6 action.zip \
         --web true
-      wsk api create /v1 /cat PUT cat/cat-put
+      ./wsk api create /v1 /cat PUT cat/cat-put
       cd ../..
 
       echo "Installing GET Cat Action"
       cd actions/cat-get-action
       npm install
       zip -rq action.zip *
-      wsk action create cat/cat-get \
+      ./wsk action create cat/cat-get \
         --kind nodejs:6 action.zip \
         --web true
-      wsk api create /v1 /cat GET cat/cat-get
+      ./wsk api create /v1 /cat GET cat/cat-get
       cd ../..
 
       echo "Installing DELETE Cat Action"
       cd actions/cat-delete-action
       npm install
       zip -rq action.zip *
-      wsk action create cat/cat-delete \
+      ./wsk action create cat/cat-delete \
         --kind nodejs:6 action.zip \
         --web true
-      wsk api create /v1 /cat DELETE cat/cat-delete
+      ./wsk api create /v1 /cat DELETE cat/cat-delete
       cd ../..
 
       echo "Test that everything is working ... TODO"
