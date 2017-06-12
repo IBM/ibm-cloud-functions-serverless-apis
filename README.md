@@ -58,13 +58,13 @@ There are four helper scripts that simulate HTTP API clients to create, get, upd
 # POST /v1/cat {"name": "Tarball", "color": "Black"}
 client/cat-post.sh Tarball Black
 
-# GET /v2/cat?id=1
+# GET /v1/cat?id=1
 client/cat-get.sh 1 # Or whatever integer ID was returned by the command above
 
 # PUT /v1/cat {"id": 1, "name": "Tarball", "color": "Gray"}
 client/cat-put.sh 1 Tarball Gray
 
-# DELETE /v2/cat?id=1
+# DELETE /v1/cat?id=1
 client/cat-delete.sh 1
 ```
 
