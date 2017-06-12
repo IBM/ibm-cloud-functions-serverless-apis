@@ -83,26 +83,32 @@ Create four actions to manage cat data, one for each method (POST, PUT, GET, and
 
 > **Note**: There are a [number of built-in packages ](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments) available in the OpenWhisk Node.js runtime environment. If you need additional packages, you can upload them in a ZIP file along with your action file. More information on the single file versus zipped archive approaches is available in the [getting started guide](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action).
 
-### 5.1.1 The cat create action
-The JavaScript code for the POST action is in `/actions/cat-post-action/index.js`. This function depends on the `mysql` client npm package which we need to connect to the database. Install the package using `npm install` (which parses `package.json`) and create a ZIP file that includes both your application and its dependencies.
-```bash
-  cd actions/cat-post-action
-  npm install
-  zip -rq action.zip *
-```
-Next use the OpenWhisk CLI to create an action from `action.zip`, passing along environment variables loaded from `local.env`.
-```bash
-source ../../local.env
+### 5.1.1 The cat package
+Because all of the actions rely on the MySQL database service, it's convenient to set the credentials once at the package level. This makes them available to all the actions in the package so we don't need to define them for each action at creation and run time.
 
-# Create
-wsk action create cat-post --kind nodejs:6 action.zip \
+```bash
+source local.env
+wsk package create cat \
   --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
   --param "MYSQL_USERNAME" $MYSQL_USERNAME \
   --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
   --param "MYSQL_DATABASE" $MYSQL_DATABASE
 ```
 
-> **Note**: The command above passes in parameters needed to connect to your MySQL database at action creation time. This makes them available each time the action is called, instead of having to pass them in each time as runtime parameters.
+### 5.1.2 The cat create action
+The JavaScript code for the POST action is in `/actions/cat-post-action/index.js`. This function depends on the `mysql` client npm package which we need to connect to the database. Install the package using `npm install` (which parses `package.json`) and create a ZIP file that includes both your application and its dependencies.
+```bash
+cd actions/cat-post-action
+npm install
+zip -rq action.zip *
+```
+Next use the OpenWhisk CLI to create an action from `action.zip`.
+```bash
+# Create
+wsk action create cat/cat-post \
+  --kind nodejs:6 action.zip \
+  --web true
+```
 
 Then manually invoke the action using the `wsk` CLI to test.
 
@@ -110,33 +116,14 @@ Then manually invoke the action using the `wsk` CLI to test.
 # Test
 wsk action invoke \
   --blocking \
-  --param name Henry \
+  --param name Tarball \
   --param color Black \
-  cat-post
+  cat/cat-post
 ```
 
-Repeat the steps above to create and test the corresponding PUT, GET, and DELETE actions.
+Repeat the steps above to create and test the corresponding GET, PUT, and DELETE actions.
 
-### 5.1.2 The cat update action
-```bash
-# Create
-cd ../../actions/cat-put-action
-npm install
-zip -rq action.zip *
-wsk action create cat-put --kind nodejs:6 action.zip \
-  --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
-  --param "MYSQL_USERNAME" $MYSQL_USERNAME \
-  --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-  --param "MYSQL_DATABASE" $MYSQL_DATABASE
-
-# Test
-wsk action invoke \
-  --blocking \
-  --param name Henry \
-  --param color Gray \
-  --param id 1 \
-  cat-put
-```
+> **Note**: Replace the number 1 in your tests below to reflect the actual id returned from the POST action result above.
 
 ### 5.1.3 The cat read action
 ```bash
@@ -144,36 +131,61 @@ wsk action invoke \
 cd ../../actions/cat-get-action
 npm install
 zip -rq action.zip *
-wsk action create cat-get --kind nodejs:6 action.zip \
-  --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
-  --param "MYSQL_USERNAME" $MYSQL_USERNAME \
-  --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-  --param "MYSQL_DATABASE" $MYSQL_DATABASE
+wsk action create cat/cat-get \
+  --kind nodejs:6 action.zip \
+  --web true
 
 # Test
 wsk action invoke \
   --blocking \
   --param id 1 \
-  cat-get
+  cat/cat-get
 ```
 
-### 5.1.4 The cat delete action
+### 5.1.4 The cat update action
+```bash
+# Create
+cd ../../actions/cat-put-action
+npm install
+zip -rq action.zip *
+wsk action create cat/cat-put \
+  --kind nodejs:6 action.zip \
+  --web true
+
+# Test
+wsk action invoke \
+  --blocking \
+  --param name Tarball \
+  --param color Gray \
+  --param id 1 \
+  cat/cat-put
+
+wsk action invoke \
+  --blocking \
+  --param id 1 \
+  cat/cat-get
+```
+
+### 5.1.5 The cat delete action
 ```bash
 # Create
 cd ../../actions/cat-delete-action
 npm install
 zip -rq action.zip *
-wsk action create cat-delete --kind nodejs:6 action.zip \
-  --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
-  --param "MYSQL_USERNAME" $MYSQL_USERNAME \
-  --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-  --param "MYSQL_DATABASE" $MYSQL_DATABASE
+wsk action create cat/cat-delete \
+  --kind nodejs:6 action.zip \
+  --web true
 
 # Test
 wsk action invoke \
   --blocking \
   --param id 1 \
-  cat-delete
+  cat/cat-delete
+
+wsk action invoke \
+  --blocking \
+  --param id 1 \
+  cat/cat-get
 ```
 
 ## 5.2 Create REST API endpoints
@@ -181,23 +193,23 @@ Now map a resource endpoint (`/cat`) to the `GET`, `DELETE`, `PUT`, and `POST` H
 
 ```bash
 # Create
-wsk api create -n "Cats API" /v1 /cat post cat-post
-wsk api create /v1 /cat put cat-put
-wsk api create /v1 /cat get cat-get
-wsk api create /v1 /cat delete cat-delete
+wsk api create -n "Cats API" /v1 /cat post cat/cat-post
+wsk api create /v1 /cat put cat/cat-put
+wsk api create /v1 /cat get cat/cat-get
+wsk api create /v1 /cat delete cat/cat-delete
 
 # Test
 
 # POST /v1/cat {"name": "Tarball", "color": "Black"}
 client/cat-post.sh Tarball Black
 
-# GET /v2/cat?id=1
-client/cat-get.sh 1
+# GET /v1/cat?id=1
+client/cat-get.sh 1 # Replace 1 with the id returned from the POST action above
 
 # PUT /v1/cat {"id": 1, "name": "Tarball", "color": "Gray"}
 client/cat-put.sh 1 Tarball Gray
 
-# DELETE /v2/cat?id=1
+# DELETE /v1/cat?id=1
 client/cat-delete.sh 1
 ```
 
@@ -206,10 +218,11 @@ Remove the API mappings and delete the actions.
 
 ```bash
 wsk api delete /v1
-wsk action delete cat-post
-wsk action delete cat-put
-wsk action delete cat-get
-wsk action delete cat-delete
+wsk action delete cat/cat-post
+wsk action delete cat/cat-put
+wsk action delete cat/cat-get
+wsk action delete cat/cat-delete
+wsk package delete cat
 ```
 
 # Troubleshooting

@@ -37,60 +37,52 @@ function install() {
     --namespace $BLUEMIX_NAMESPACE
 
   echo -e "\n"
-  echo "Installing POST Cat Action"
-  cd actions/cat-post-action
-  npm install
-  zip -rq action.zip *
-  wsk action create cat-post \
-    --kind nodejs:6 action.zip \
-    --web true \
+
+  echo "Creating a package (here used as a namespace for shared environment variables)"
+  wsk package create cat \
     --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api create -n "Cats API" /v1 /cat POST cat-post
+
+  echo "Installing POST Cat Action"
+  cd actions/cat-post-action
+  npm install
+  zip -rq action.zip *
+  wsk action create cat/cat-post \
+    --kind nodejs:6 action.zip \
+    --web true
+  wsk api create -n "Cats API" /v1 /cat POST cat/cat-post
   cd ../..
 
   echo "Installing PUT Cat Action"
   cd actions/cat-put-action
   npm install
   zip -rq action.zip *
-  wsk action create cat-put \
+  wsk action create cat/cat-put \
     --kind nodejs:6 action.zip \
-    --web true \
-    --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
-    --param "MYSQL_USERNAME" $MYSQL_USERNAME \
-    --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-    --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api create /v1 /cat PUT cat-put
+    --web true
+  wsk api create /v1 /cat PUT cat/cat-put
   cd ../..
 
   echo "Installing GET Cat Action"
   cd actions/cat-get-action
   npm install
   zip -rq action.zip *
-  wsk action create cat-get \
+  wsk action create cat/cat-get \
     --kind nodejs:6 action.zip \
-    --web true \
-    --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
-    --param "MYSQL_USERNAME" $MYSQL_USERNAME \
-    --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-    --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api create /v1 /cat GET cat-get
+    --web true
+  wsk api create /v1 /cat GET cat/cat-get
   cd ../..
 
   echo "Installing DELETE Cat Action"
   cd actions/cat-delete-action
   npm install
   zip -rq action.zip *
-  wsk action create cat-delete \
+  wsk action create cat/cat-delete \
     --kind nodejs:6 action.zip \
-    --web true \
-    --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
-    --param "MYSQL_USERNAME" $MYSQL_USERNAME \
-    --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
-    --param "MYSQL_DATABASE" $MYSQL_DATABASE
-  wsk api create /v1 /cat DELETE cat-delete
+    --web true
+  wsk api create /v1 /cat DELETE cat/cat-delete
   cd ../..
 
   echo -e "Install Complete"
@@ -103,10 +95,13 @@ function uninstall() {
   wsk api delete /v1
 
   echo "Removing actions..."
-  wsk action delete cat-post
-  wsk action delete cat-put
-  wsk action delete cat-get
-  wsk action delete cat-delete
+  wsk action delete cat/cat-post
+  wsk action delete cat/cat-put
+  wsk action delete cat/cat-get
+  wsk action delete cat/cat-delete
+
+  echo "Removing package..."
+  wsk package delete cat
 
   echo -e "Uninstall Complete"
 }
