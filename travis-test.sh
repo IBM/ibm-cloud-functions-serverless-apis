@@ -38,6 +38,7 @@ export CAT_API_URL=`wsk api list | tail -1 | awk '{print $5}'`
 
 echo "Running pythontests"
 python3 --version
+sudo pip3 requests --upgrade
 sudo -H pip install 'requests[security]'
 python travis-test.py
 
