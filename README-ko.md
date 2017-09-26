@@ -4,7 +4,7 @@
 
 *다른 언어로 보기: [English](README.md).*
 
-이 과정은 서버리스, 이벤트 중심 아키텍쳐가 어떻게 HTTP REST API 호출에 대응하여 자동으로 확장되는 코드를 실행하는지 보여줍니다. API 엔드 포인트가 호출 되기 전까지 소비되는 리소스가 없습니다. 엔드 포인트가 호출 될 때, 리소스는 HTTP 메소드에서 개별적으로 현재 필요로하는 부하에 정확히 맞춰서 프로비저닝됩니다.
+이 과정은 서버리스, 이벤트 중심 아키텍쳐가 어떻게 HTTP REST API 호출에 대응하여 자동으로 확장되는 코드를 실행하는지 보여줍니다. API 엔드포인트가 호출 되기 전까지 소비되는 리소스가 없습니다. 엔드포인트가 호출 될 때, 리소스는 HTTP 메소드에서 개별적으로 현재 필요로하는 부하에 정확히 맞춰서 프로비저닝됩니다.
 
 이 과정에서는 MySQL 데이터베이스에 데이터를 쓰고 읽는 네 가지 OpenWhisk 액션(JavaScript로 작성)을 보여 주며 액션이 어떻게 데이터 서비스와 함께 동작하고 HTTP 요청에 응답하여 로직을 실행하는지 보여줍니다.
 
@@ -83,7 +83,7 @@ client/cat-delete.sh 1
 ## 5.1 고양이 데이터 수정을 위한 OpenWhisk 액션 생성하기
 고양이 데이터 관리를 위해 API의 각 메소드 (POST, PUT, GET 및 DELETE)에 대한 네 개의 액션을 생성합니다. 액션을 위한 코드는 `/actions`에 있습니다. 자 이제 첫 번째 고양이 정보를 생성하는 액션부터 시작해 보겠습니다.
 
-> **참고**: OpenWhisk Node.js 런타임 환경에 [내장 패키지 수](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments)에 대한 정보가 있습니다. 추가적인 패키지가 필요하다면, 액션 파일을 ZIP 파일 형태로 업로드 할 할 수 있습니다. 단일 파일와 ZIP으로 압축된 아카이브에 대한 차이에 대한 정보는 [시작 가이드](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action)를 참고하시기 바랍니다.
+> **참고**: OpenWhisk Node.js 런타임 환경에 [내장 패키지 수](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments)에 대한 정보가 있습니다. 추가적인 패키지가 필요하다면, 액션 파일을 ZIP 파일 형태로 업로드 할 수 있습니다. 단일 파일와 ZIP으로 압축된 아카이브에 대한 차이에 대한 정보는 [시작 가이드](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action)를 참고하시기 바랍니다.
 
 ### 5.1.1 cat 패키지
 모든 액션들은 MySQL 데이터베이스 서비스에 의존하고 있기 때문에, 이를  패키지 레벨에서 신임정보를 한번만 설정하는것이 편리합니다. 이는 패키지에 있는 모든 액션들을 사용할 수 있게 되므로 생성 및 실행 할 때마다 각각에 대해 정의할 필요가 없어집니다.
@@ -98,7 +98,7 @@ wsk package create cat \
 ```
 
 ### 5.1.2 cat 생성 액션
-POST 액션에 대한 JavaScript 코드는 `/actions/cat-post-action/index.js`에 있습니다. 이 함수는 데이터베이스 연결을 위한 `mysql` 클라이언트 npm 패키지에 의존적입니다. `package.json`을 파싱하는 `npm install` 명령으로 패키지를 설치하고 애플리케이션과 이에 종속정인 요소들을 포함하는 ZIP 파일을 생성 하십시오.
+POST 액션에 대한 JavaScript 코드는 `/actions/cat-post-action/index.js`에 있습니다. 이 함수는 데이터베이스 연결을 위한 `mysql` 클라이언트 npm 패키지에 의존적입니다. `package.json`을 파싱하는 `npm install` 명령으로 패키지를 설치하고 애플리케이션과 이에 종속적인 요소들을 포함하는 ZIP 파일을 생성 하십시오.
 ```bash
 cd actions/cat-post-action
 npm install
@@ -191,7 +191,7 @@ wsk action invoke \
 ```
 
 ## 5.2 REST API 엔트포인트 생성하기
-이제 자원 엔드포인트인 (`/cat`)을 `GET`, `DELETE`, `PUT`, 및 `POST` HTTP 메소드에 매핑하고, 이에 대응하는 OpenWhisk 액션과 연결하십시오. 그리고 테스트를 위해 클라이언트 스크립트를 사용하여 테스트 하십시오.
+이제 리소스 엔드포인트인 (`/cat`)을 `GET`, `DELETE`, `PUT`, 및 `POST` HTTP 메소드에 매핑하고, 이에 대응하는 OpenWhisk 액션과 연결하십시오. 그리고 테스트를 위해 클라이언트 스크립트를 사용하여 테스트 하십시오.
 
 ```bash
 # 생성
@@ -228,7 +228,7 @@ wsk package delete cat
 ```
 
 # 문제 해결
-가장 먼제 OpenWhisk 활성화 로그에서 오류를 확인 하십시오. 명령창에서 `wsk activation poll`을 이용하여 로그 메시지를 확인하거나 [Bluemix의 모니터링 콘솔](https://console.ng.bluemix.net/openwhisk/dashboard)에서 시각적으로 상세정보를 확인해 보십시오.
+가장 먼저 OpenWhisk 활성화 로그에서 오류를 확인 하십시오. 명령창에서 `wsk activation poll`을 이용하여 로그 메시지를 확인하거나 [Bluemix의 모니터링 콘솔](https://console.ng.bluemix.net/openwhisk/dashboard)에서 시각적으로 상세정보를 확인해 보십시오.
 
 오류가 즉각적으로 분명하지 않다면, [최신 버젼의 `wsk` CLI](https://console.ng.bluemix.net/openwhisk/learn/cli)가 설치되어 있는지 확인하십시오. 만약 이전 것이라면 다운로드하고 업데이트 하십시오.
 ```bash
