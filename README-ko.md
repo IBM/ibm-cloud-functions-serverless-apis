@@ -86,7 +86,7 @@ client/cat-delete.sh 1
 > **참고**: OpenWhisk Node.js 런타임 환경에 [내장 패키지 수](https://github.com/openwhisk/openwhisk/blob/master/docs/reference.md?cm_mc_uid=33591682128714865890263&cm_mc_sid_50200000=1487347815#javascript-runtime-environments)에 대한 정보가 있습니다. 추가적인 패키지가 필요하다면, 액션 파일을 ZIP 파일 형태로 업로드 할 수 있습니다. 단일 파일와 ZIP으로 압축된 아카이브에 대한 차이에 대한 정보는 [시작 가이드](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action)를 참고하시기 바랍니다.
 
 ### 5.1.1 cat 패키지
-모든 액션들은 MySQL 데이터베이스 서비스에 의존하고 있기 때문에, 이를  패키지 레벨에서 신임정보를 한번만 설정하는것이 편리합니다. 이는 패키지에 있는 모든 액션들을 사용할 수 있게 되므로 생성 및 실행 할 때마다 각각에 대해 정의할 필요가 없어집니다.
+모든 액션들은 MySQL 데이터베이스 서비스에 의존하고 있기 때문에, 패키지 레벨에서 신임정보를 한 번만 설정하는 것이 편리합니다. 이렇게 하면 패키지에 있는 모든 액션들에 대해 사용할 수 있게 되므로 생성 및 실행 할 때마다 각각에 대해 정의할 필요가 없어집니다.
 
 ```bash
 source local.env
@@ -98,7 +98,7 @@ wsk package create cat \
 ```
 
 ### 5.1.2 cat 생성 액션
-POST 액션에 대한 JavaScript 코드는 `/actions/cat-post-action/index.js`에 있습니다. 이 함수는 데이터베이스 연결을 위한 `mysql` 클라이언트 npm 패키지에 의존적입니다. `package.json`을 파싱하는 `npm install` 명령으로 패키지를 설치하고 애플리케이션과 이에 종속적인 요소들을 포함하는 ZIP 파일을 생성 하십시오.
+POST 액션에 대한 JavaScript 코드는 `/actions/cat-post-action/index.js`에 있습니다. 이 함수는 데이터베이스 연결을 위한 `mysql` 클라이언트 npm 패키지에 종속적입니다. `package.json`을 파싱하는 `npm install` 명령으로 패키지를 설치하고 애플리케이션과 이에 종속적인 요소가 포함된 ZIP 파일을 생성 하십시오.
 ```bash
 cd actions/cat-post-action
 npm install
@@ -123,11 +123,11 @@ wsk action invoke \
   cat/cat-post
 ```
 
-GET, PUT 그리고 DELETE 액션에 대해 위의 생성 및 테스트를 반복합니다.
+GET, PUT 그리고 DELETE 액션에 대해 위의 생성과 테스트를 반복합니다.
 
-> **참고**: 아래 테스트에서 숫자 1을 위의 POST 액션을 실행한 결과로 얻은 실제 id 값으로 변경합니다.
+> **참고**: 아래 테스트에서 숫자 1을 위의 POST 액션을 실행하여 얻은 실제 id 값으로 교체합니다.
 
-### 5.1.3 cat 읽기 action
+### 5.1.3 cat 읽기 액션
 ```bash
 # 생성
 cd ../../actions/cat-get-action
