@@ -1,29 +1,29 @@
 [![Build Status](https://travis-ci.org/IBM/openwhisk-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/openwhisk-serverless-apis)
 
-# Serverless APIs with OpenWhisk
+# Serverless APIs with IBM Cloud Functions (powered by Apache OpenWhisk)
 
 *Read this in other languages: [한국어](README-ko.md).*
 
 This project shows how serverless, event-driven architectures can execute code that scales automatically in response to demand from HTTP REST API calls. No resources are consumed until the API endpoints are called. When they are called, resources are provisioned to exactly match the current load needed by each HTTP method independently.
 
-It shows four OpenWhisk actions (written in JavaScript) that write and read data in a MySQL database. This demonstrates how actions can work with supporting data services and execute logic in response to HTTP requests.
+It shows four IBM Cloud Functions (powered by Apache OpenWhisk) actions (written in JavaScript) that write and read data in a MySQL database. This demonstrates how actions can work with supporting data services and execute logic in response to HTTP requests.
 
 One action is mapped to HTTP POST requests. It inserts the supplied cat name and color parameters into the database. A second action is mapped to PUT requests to update those fields for an existing cat. A third action is mapped to GET requests that return specific cat data. A fourth action deletes a given cat data.
 
-The Node.js runtime on Bluemix provides a built-in whitelist of npm modules. This demo also highlights how additional Node.js dependencies – such as the MySQL client – can be packaged in a ZIP file with custom actions to provide a high level of extensibility.
+The Node.js runtime on the IBM Cloud provides a built-in whitelist of npm modules. This demo also highlights how additional Node.js dependencies – such as the MySQL client – can be packaged in a ZIP file with custom actions to provide a high level of extensibility.
 
 ![Sample Architecture](docs/arch_buildserverless.png)
 
 ## Included components
 
-- OpenWhisk
+- IBM Cloud Functions (powered by Apache OpenWhisk)
 - ClearDB or Compose (MySQL)
 
 ## Prerequisite
 
 You should have a basic understanding of the OpenWhisk programming model. If not, [try the action, trigger, and rule demo first](https://github.com/IBM/openwhisk-action-trigger-rule).
 
-Also, you'll need a Bluemix account and the latest [OpenWhisk command line tool (`wsk`) installed and on your PATH](https://github.com/IBM/openwhisk-action-trigger-rule/blob/master/docs/OPENWHISK.md).
+Also, you'll need an IBM Cloud account and the latest [OpenWhisk command line tool (`wsk`) installed and on your PATH](https://github.com/IBM/openwhisk-action-trigger-rule/blob/master/docs/OPENWHISK.md).
 
 As an alternative to this end-to-end example, you might also consider the more [basic "building block" version](https://github.com/IBM/openwhisk-rest-api-trigger) of this sample.
 
@@ -36,11 +36,11 @@ As an alternative to this end-to-end example, you might also consider the more [
 5. [Recreate deployment manually](#5-recreate-deployment-manually)
 
 # 1. Provision MySQL
-Log into Bluemix and provision a [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/) or a [Compose for MySQL](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/) database instance. ClearDB has a free tier for simple testing, while Compose has tiers for larger workloads.
+Log into the IBM Cloud and provision a [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/) or a [Compose for MySQL](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/) database instance. ClearDB has a free tier for simple testing, while Compose has tiers for larger workloads.
 
 * For [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/), log into the ClearDB dashboard, and select the default database created for you. Get the user, password and host information under "Endpoint Information".
 
-* For [Compose](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/), get the information from the "Service Credentials" tab in the Bluemix console.
+* For [Compose](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/), get the information from the "Service Credentials" tab in the IBM Cloud console.
 
 Copy `template.local.env` to a new file named `local.env` and update the `MYSQL_HOSTNAME`, `MYSQL_USERNAME`, `MYSQL_PASSWORD` and `MYSQL_DATABASE` for your MySQL instance.
 
@@ -227,7 +227,7 @@ wsk package delete cat
 ```
 
 # Troubleshooting
-Check for errors first in the OpenWhisk activation log. Tail the log on the command line with `wsk activation poll` or drill into details visually with the [monitoring console on Bluemix](https://console.ng.bluemix.net/openwhisk/dashboard).
+Check for errors first in the OpenWhisk activation log. Tail the log on the command line with `wsk activation poll` or drill into details visually with the [monitoring console on the IBM Cloud](https://console.ng.bluemix.net/openwhisk/dashboard).
 
 If the error is not immediately obvious, make sure you have the [latest version of the `wsk` CLI installed](https://console.ng.bluemix.net/openwhisk/learn/cli). If it's older than a few weeks, download an update.
 ```bash
@@ -237,9 +237,9 @@ wsk property get --cliversion
 # Alternative deployment methods
 `deploy.sh` will be replaced with [`wskdeploy`](https://github.com/openwhisk/openwhisk-wskdeploy) in the future. `wskdeploy` uses a manifest to deploy declared triggers, actions, and rules to OpenWhisk.
 
-You can also use the following button to clone a copy of this repository and deploy to Bluemix as part of a DevOps toolchain. Supply your OpenWhisk and MySQL credentials under the Delivery Pipeline icon, click Create, then run the Deploy stage for the Delivery Pipeline.
+You can also use the following button to clone a copy of this repository and deploy to the IBM Cloud as part of a DevOps toolchain. Supply your OpenWhisk and MySQL credentials under the Delivery Pipeline icon, click Create, then run the Deploy stage for the Delivery Pipeline.
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/openwhisk-serverless-apis.git)
+[![Deploy to the IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/openwhisk-serverless-apis.git)
 
 # License
 [Apache 2.0](LICENSE.txt)
