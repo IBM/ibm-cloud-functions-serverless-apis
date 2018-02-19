@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/IBM/openwhisk-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/openwhisk-serverless-apis)
+[![Build Status](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis)
 
 # Serverless APIs with IBM Cloud Functions (powered by Apache OpenWhisk)
 
