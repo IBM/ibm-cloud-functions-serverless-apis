@@ -40,7 +40,7 @@ Log into the IBM Cloud and provision a [ClearDB](https://console.ng.bluemix.net/
 
 * For [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/), log into the ClearDB dashboard, and select the default database created for you. Get the user, password and host information under "Endpoint Information".
 
-* For [Compose](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/), get the information from the "Service Credentials" tab in the IBM Cloud console.
+* For [Compose](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/), get the information from the `Service Credentials` tab in the IBM Cloud console.
 
 Copy `template.local.env` to a new file named `local.env` and update the `MYSQL_HOSTNAME`, `MYSQL_USERNAME`, `MYSQL_PASSWORD` and `MYSQL_DATABASE` for your MySQL instance.
 
@@ -237,7 +237,7 @@ wsk property get --cliversion
 # Alternative deployment methods
 `deploy.sh` will be replaced with [`wskdeploy`](https://github.com/openwhisk/openwhisk-wskdeploy) in the future. `wskdeploy` uses a manifest to deploy declared triggers, actions, and rules to OpenWhisk.
 
-You can also use the following button to clone a copy of this repository and deploy to the IBM Cloud as part of a DevOps toolchain. Supply your OpenWhisk and MySQL credentials under the Delivery Pipeline icon, click Create, then run the Deploy stage for the Delivery Pipeline.
+You can also use the following button to clone a copy of this repository and deploy to the IBM Cloud as part of a DevOps toolchain. Supply your OpenWhisk and MySQL credentials under the Delivery Pipeline icon, click `Create`, then run the Deploy stage for the Delivery Pipeline.
 
 [![Deploy to the IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/openwhisk-serverless-apis.git)
 
