@@ -135,7 +135,7 @@ wsk package create cat \
 
 ### 5.1.2 猫の作成アクション
 
-POSTアクションのJavaScriptコードは、 `/actions/cat-post-action/index.js` にあります。
+POSTアクションのJavaScriptコードは、 [`/actions/cat-post-action/index.js`](actions/cat-post-action/index.js) にあります。
 この関数は、データベースに接続するために必要な `mysql` クライアント npm パッケージに依存します。
 `npm install` ([`package.json`](actions/cat-post-action/package.json) を解析する) を使ってパッケージをインストールし、アプリケーションとその依存関係の両方を含む ZIP ファイルを作成します。
 
@@ -313,4 +313,4 @@ OpenWhisk と MySQL の資格情報を Delivery Pipeline アイコンの下に�
 [![Deploy to the IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/openwhisk-serverless-apis.git)
 
 # ライセンス
-[Apache 2.0](LICENSE.txt)
+[Apache 2.0](LICENSE)
