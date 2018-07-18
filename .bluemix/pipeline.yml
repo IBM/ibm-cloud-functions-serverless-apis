@@ -27,14 +27,14 @@ stages:
   - name: MYSQL_DATABASE
     value: ${MYSQL_DATABASE}
     type: text
-  - name: BLUEMIX_USERNAME
-    value: ${BLUEMIX_USERNAME}
+  - name: IBM_CLOUD_USERNAME
+    value: ${IBM_CLOUD_USERNAME}
     type: text
-  - name: BLUEMIX_PASSWORD
-    value: ${BLUEMIX_PASSWORD}
+  - name: IBM_CLOUD_PASSWORD
+    value: ${IBM_CLOUD_PASSWORD}
     type: secure
-  - name: BLUEMIX_NAMESPACE
-    value: ${BLUEMIX_NAMESPACE}
+  - name: IBM_CLOUD_NAMESPACE
+    value: ${IBM_CLOUD_NAMESPACE}
     type: text
   jobs:
   - name: Deploy
@@ -72,9 +72,9 @@ stages:
 
       echo "Logging in to Bluemix to create API service"
       ./wsk bluemix login \
-        --user $BLUEMIX_USERNAME \
-        --password $BLUEMIX_PASSWORD \
-        --namespace $BLUEMIX_NAMESPACE
+        --user $IBM_CLOUD_USERNAME \
+        --password $IBM_CLOUD_PASSWORD \
+        --namespace $IBM_CLOUD_NAMESPACE
 
       echo "Creating a package (here used as a namespace for shared environment variables)"
       ./wsk package create cat \

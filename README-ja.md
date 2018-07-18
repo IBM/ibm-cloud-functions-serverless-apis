@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis)
-
 # IBM Cloud Functions でサーバーレス API ハンドラーを作成する (Apache OpenWhisk の利用)
+
+[![Build Status](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis)
 
 *Read this in other languages: [English](README.md), [한국어](README-ko.md).*
 
@@ -43,22 +43,24 @@ OpenWhisk プログラミングモデルの基本的な理解が必要です。�
 5. [こんどは手動でデプロイする](#5-recreate-deployment-manually)
 
 <a name="1-provision-mysql"></a>
-# 1. MySQL の準備
+
+## 1. MySQL の準備
 
 IBM Cloudにログインし、[ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/) または [Compose for MySQL](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/) データベースインスタンスを準備 (プロビジョニング) します。
 ClearDB には簡単なテストのためのフリーの段階 (tier) がありますが、Compose にはより大きなワークロードの段階があります。
 
-* [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/) の場合は、ClearDB ダッシュボードにログインし、作成されたデフォルトのデータベースを選択します。
+- [ClearDB](https://console.ng.bluemix.net/catalog/services/cleardb-mysql-database/) の場合は、ClearDB ダッシュボードにログインし、作成されたデフォルトのデータベースを選択します。
 `Endpoint Information` でユーザー、パスワード、およびホスト情報を取得します。
 
-* [Compose for MySQL](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/) の場合は、IBM Cloud コンソールの `Service Credentials` タブから情報を入手してください。
+- [Compose for MySQL](https://console.ng.bluemix.net/catalog/services/compose-for-mysql/) の場合は、IBM Cloud コンソールの `Service Credentials` タブから情報を入手してください。
 
 `template.local.env` を `local.env` という名前の新しいファイルにコピーし、MySQL インスタンスの `MYSQL_HOSTNAME`、`MYSQL_USERNAME`、`MYSQL_PASSWORD`、`MYSQL_DATABASE` の値を書き込んでください。
 
 > 訳者注: 2018年7月現在、ClearDB サービスは利用できないようですが、参考のためにテキストは翻訳します
 
 <a name="2-create-openwhisk-actions-and-mappings"></a>
-# 2. OpenWhisk アクションとマッピングを作成する
+
+## 2. OpenWhisk アクションとマッピングを作成する
 
 `deploy.sh` は便利なスクリプトで、`local.env` から環境変数を読み込み、あなたのために OpenWhisk アクションと API マッピングを作成します。
 後でこれらのコマンドを自分で実行します。
@@ -71,7 +73,8 @@ ClearDB には簡単なテストのためのフリーの段階 (tier) があり�
 [別のデプロイ方法](#alternative-deployment-methods) を参照することもできます。
 
 <a name="3-test-api-endpoints"></a>
-# 3. APIエンドポイントをテストする
+
+## 3. APIエンドポイントをテストする
 
 `/v1/cat` エンドポイントに対して、エンティティを作成、取得、更新、削除する HTTP API クライアントをシミュレートする4つのヘルパースクリプトがあります。
 
@@ -94,7 +97,8 @@ client/cat-delete.sh 1
 ```
 
 <a name="4-delete-actions-and-mappings"></a>
-# 4. アクションとマッピングを削除する
+
+## 4. アクションとマッピングを削除する
 
 `deploy.sh` をもう一度使って、OpenWhiskのアクションとマッピングを削除してください。
 次のセクションではそれらをステップバイステップで再作成します。
@@ -104,11 +108,12 @@ client/cat-delete.sh 1
 ```
 
 <a name="5-recreate-deployment-manually"></a>
-# 5. こんどは手動でデプロイする
+
+## 5. こんどは手動でデプロイする
 
 このセクションでは、`deploy.sh` スクリプトの実行内容を詳しく見て、OpenWhiskのトリガー、アクション、ルール、およびパッケージをより詳しく扱う方法を理解していきます。
 
-## 5.1 猫データを変更するための OpenWhisk アクションの作成
+### 5.1 猫データを変更するための OpenWhisk アクションの作成
 
 猫のデータを管理するアクションを API の各メソッド(POST、PUT、GET、DELETE)ごとに1つずつ、合計で4つ作成します。
 アクションのコードは `/actions` にあります。
@@ -118,7 +123,7 @@ client/cat-delete.sh 1
 追加パッケージが必要な場合は、アクションファイルとともに ZIP ファイルにまとめてアップロードすることができます。
 単一ファイルと ZIP 圧縮アーカイブの違いの詳細については、[Getting Started Guide](https://console.ng.bluemix.net/docs/openwhisk/openwhisk_actions.html#openwhisk_js_packaged_action) を参照してください。
 
-### 5.1.1 猫パッケージ
+#### 5.1.1 猫パッケージ
 
 すべてのアクションは MySQL データベースサービスに依存しているため、パッケージレベルで一度、資格情報を設定すると便利です。
 これにより、パッケージ内のすべてのアクションで資格情報を使用できるようになります。
@@ -126,14 +131,14 @@ client/cat-delete.sh 1
 
 ```bash
 source local.env
-wsk package create cat \
+bx wsk package create cat \
   --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
   --param "MYSQL_USERNAME" $MYSQL_USERNAME \
   --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
   --param "MYSQL_DATABASE" $MYSQL_DATABASE
 ```
 
-### 5.1.2 猫の作成アクション
+#### 5.1.2 猫の作成アクション
 
 POSTアクションのJavaScriptコードは、 [`/actions/cat-post-action/index.js`](actions/cat-post-action/index.js) にあります。
 この関数は、データベースに接続するために必要な `mysql` クライアント npm パッケージに依存します。
@@ -149,7 +154,7 @@ zip -rq action.zip *
 
 ```bash
 # Create
-wsk action create cat/cat-post \
+bx wsk action create cat/cat-post \
   --kind nodejs:6 action.zip \
   --web true
 ```
@@ -158,7 +163,7 @@ wsk action create cat/cat-post \
 
 ```bash
 # Test
-wsk action invoke \
+bx wsk action invoke \
   --blocking \
   --param name Tarball \
   --param color Black \
@@ -169,10 +174,9 @@ wsk action invoke \
 
 上記の手順を繰り返して、対応する GET、PUT、DELETE アクションを作成してテストしていきます。
 
-
 > **注**: 上記の POST アクション結果から返された実際の ID を反映させるために、あなたのテストでは `id 1` を置き換えてください。
 
-### 5.1.3 猫の参照アクション
+#### 5.1.3 猫の参照アクション
 
 GET アクションを作成してテストします。
 
@@ -181,12 +185,12 @@ GET アクションを作成してテストします。
 cd ../../actions/cat-get-action
 npm install
 zip -rq action.zip *
-wsk action create cat/cat-get \
+bx wsk action create cat/cat-get \
   --kind nodejs:6 action.zip \
   --web true
 
 # Test
-wsk action invoke \
+bx wsk action invoke \
   --blocking \
   --param id 1 \
   cat/cat-get
@@ -194,7 +198,7 @@ wsk action invoke \
 
 > 訳者注: このアクションで、さきほど作成された「名前が Tarball で、色が黒」である猫のレコードが読み取られ表示されるはずです。
 
-### 5.1.4 猫の更新アクション
+#### 5.1.4 猫の更新アクション
 
 PUT アクションを作成してテストします。
 
@@ -203,19 +207,19 @@ PUT アクションを作成してテストします。
 cd ../../actions/cat-put-action
 npm install
 zip -rq action.zip *
-wsk action create cat/cat-put \
+bx wsk action create cat/cat-put \
   --kind nodejs:6 action.zip \
   --web true
 
 # Test
-wsk action invoke \
+bx wsk action invoke \
   --blocking \
   --param name Tarball \
   --param color Gray \
   --param id 1 \
   cat/cat-put
 
-wsk action invoke \
+bx wsk action invoke \
   --blocking \
   --param id 1 \
   cat/cat-get
@@ -223,7 +227,7 @@ wsk action invoke \
 
 > 訳者注: このアクションで、さきほど作成・参照された「名前が Tarball で、色が黒」である猫のレコードが、「名前が Tarball で、色が灰色」に書き換えられました。
 
-### 5.1.5 猫の削除アクション
+#### 5.1.5 猫の削除アクション
 
 DELETE アクションを作成してテストします。
 
@@ -232,17 +236,17 @@ DELETE アクションを作成してテストします。
 cd ../../actions/cat-delete-action
 npm install
 zip -rq action.zip *
-wsk action create cat/cat-delete \
+bx wsk action create cat/cat-delete \
   --kind nodejs:6 action.zip \
   --web true
 
 # Test
-wsk action invoke \
+bx wsk action invoke \
   --blocking \
   --param id 1 \
   cat/cat-delete
 
-wsk action invoke \
+bx wsk action invoke \
   --blocking \
   --param id 1 \
   cat/cat-get
@@ -250,16 +254,16 @@ wsk action invoke \
 
 > 訳者注: このアクションで、さきほど作成・参照・更新された「名前が Tarball で、色が灰色」である猫のレコードが、削除されました。
 
-## 5.2 REST APIエンドポイントを作成する
+### 5.2 REST APIエンドポイントを作成する
 
 次に、リソースエンドポイント (`/cat`) を `GET`、`DELETE`、`PUT`、`POST` HTTP メソッドにマップし、対応する OpenWhisk アクションに関連づけて、クライアントスクリプトを使ってテストします。
 
 ```bash
 # Create
-wsk api create -n "Cats API" /v1 /cat post cat/cat-post
-wsk api create /v1 /cat put cat/cat-put
-wsk api create /v1 /cat get cat/cat-get
-wsk api create /v1 /cat delete cat/cat-delete
+bx wsk api create -n "Cats API" /v1 /cat post cat/cat-post
+bx wsk api create /v1 /cat put cat/cat-put
+bx wsk api create /v1 /cat get cat/cat-get
+bx wsk api create /v1 /cat delete cat/cat-delete
 
 # Test
 
@@ -276,34 +280,36 @@ client/cat-put.sh 1 Tarball Gray
 client/cat-delete.sh 1
 ```
 
-## 5.3 クリーンアップ
+### 5.3 クリーンアップ
 
 APIマッピングを解除し、アクションを削除します。
 
 ```bash
-wsk api delete /v1
-wsk action delete cat/cat-post
-wsk action delete cat/cat-put
-wsk action delete cat/cat-get
-wsk action delete cat/cat-delete
-wsk package delete cat
+bx wsk api delete /v1
+bx wsk action delete cat/cat-post
+bx wsk action delete cat/cat-put
+bx wsk action delete cat/cat-get
+bx wsk action delete cat/cat-delete
+bx wsk package delete cat
 ```
 
 <a name="troubleshooting"></a>
-# トラブルシューティング
+
+## トラブルシューティング
 
 まずは OpenWhisk アクティベーションログでエラーをチェックしてください。
-`wsk activation poll` を使用してコマンドラインでログを出力するか、[IBM Cloudの監視コンソール](https://console.ng.bluemix.net/openwhisk/dashboard) で視覚的に細部を掘り下げてください。
+`bx wsk activation poll` を使用してコマンドラインでログを出力するか、[IBM Cloudの監視コンソール](https://console.ng.bluemix.net/openwhisk/dashboard) で視覚的に細部を掘り下げてください。
 
 エラー内容が不明確な場合は、[最新バージョンの `wsk` CLI](https://console.ng.bluemix.net/openwhisk/learn/cli) がインストールされていることを確認してください。
 もし数週間以上経過している場合は、アップデートをダウンロードしてください。
 
 ```bash
-wsk property get --cliversion
+bx wsk property get --cliversion
 ```
 
 <a name="alternative-deployment-methods"></a>
-# 別のデプロイ方法
+
+## 別のデプロイ方法
 
 `deploy.sh` は将来、[`wskdeploy`](https://github.com/openwhisk/openwhisk-wskdeploy) に置き換えられます。 `wskdeploy` は、宣言されたトリガー、アクション、ルールを OpenWhisk にデプロイするためにマニフェスト (manifest) を使います。
 
@@ -312,5 +318,6 @@ OpenWhisk と MySQL の資格情報を Delivery Pipeline アイコンの下に�
 
 [![Deploy to the IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/openwhisk-serverless-apis.git)
 
-# ライセンス
+## ライセンス
+
 [Apache 2.0](LICENSE)

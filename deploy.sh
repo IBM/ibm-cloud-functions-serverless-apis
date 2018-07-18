@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2017 IBM Corp. All Rights Reserved.
+# Copyright 2017-2018 IBM Corp. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the “License”);
 # you may not use this file except in compliance with the License.
@@ -31,15 +31,15 @@ function install() {
   echo -e "Setting Bluemix credentials and logging in to provision API Gateway"
 
   # Edit these to match your Bluemix credentials (needed to provision the API Gateway)
-  wsk bluemix login \
-    --user $BLUEMIX_USERNAME \
-    --password $BLUEMIX_PASSWORD \
-    --namespace $BLUEMIX_NAMESPACE
+  bx wsk bluemix login \
+    --user $IBM_CLOUD_USERNAME \
+    --password $IBM_CLOUD_PASSWORD \
+    --namespace $IBM_CLOUD_NAMESPACE
 
   echo -e "\n"
 
   echo "Creating a package (here used as a namespace for shared environment variables)"
-  wsk package create cat \
+  bx wsk package create cat \
     --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
@@ -49,40 +49,40 @@ function install() {
   cd actions/cat-post-action
   npm install
   zip -rq action.zip *
-  wsk action create cat/cat-post \
+  bx wsk action create cat/cat-post \
     --kind nodejs:6 action.zip \
     --web true
-  wsk api create -n "Cats API" /v1 /cat POST cat/cat-post
+  bx wsk api create -n "Cats API" /v1 /cat POST cat/cat-post
   cd ../..
 
   echo "Installing PUT Cat Action"
   cd actions/cat-put-action
   npm install
   zip -rq action.zip *
-  wsk action create cat/cat-put \
+  bx wsk action create cat/cat-put \
     --kind nodejs:6 action.zip \
     --web true
-  wsk api create /v1 /cat PUT cat/cat-put
+  bx wsk api create /v1 /cat PUT cat/cat-put
   cd ../..
 
   echo "Installing GET Cat Action"
   cd actions/cat-get-action
   npm install
   zip -rq action.zip *
-  wsk action create cat/cat-get \
+  bx wsk action create cat/cat-get \
     --kind nodejs:6 action.zip \
     --web true
-  wsk api create /v1 /cat GET cat/cat-get
+  bx wsk api create /v1 /cat GET cat/cat-get
   cd ../..
 
   echo "Installing DELETE Cat Action"
   cd actions/cat-delete-action
   npm install
   zip -rq action.zip *
-  wsk action create cat/cat-delete \
+  bx wsk action create cat/cat-delete \
     --kind nodejs:6 action.zip \
     --web true
-  wsk api create /v1 /cat DELETE cat/cat-delete
+  bx wsk api create /v1 /cat DELETE cat/cat-delete
   cd ../..
 
   echo -e "Install Complete"
@@ -92,16 +92,16 @@ function uninstall() {
   echo -e "Uninstalling..."
 
   echo "Removing API actions..."
-  wsk api delete /v1
+  bx wsk api delete /v1
 
   echo "Removing actions..."
-  wsk action delete cat/cat-post
-  wsk action delete cat/cat-put
-  wsk action delete cat/cat-get
-  wsk action delete cat/cat-delete
+  bx wsk action delete cat/cat-post
+  bx wsk action delete cat/cat-put
+  bx wsk action delete cat/cat-get
+  bx wsk action delete cat/cat-delete
 
   echo "Removing package..."
-  wsk package delete cat
+  bx wsk package delete cat
 
   echo -e "Uninstall Complete"
 }
@@ -111,8 +111,8 @@ function showenv() {
   echo -e MYSQL_USERNAME="$MYSQL_USERNAME"
   echo -e MYSQL_PASSWORD="$MYSQL_PASSWORD"
   echo -e MYSQL_DATABASE="$MYSQL_DATABASE"
-  echo -e BLUEMIX_USERNAME="$BLUEMIX_USERNAME"
-  echo -e BLUEMIX_PASSWORD="$BLUEMIX_PASSWORD"
+  echo -e IBM_CLOUD_USERNAME="$IBM_CLOUD_USERNAME"
+  echo -e IBM_CLOUD_PASSWORD="$IBM_CLOUD_PASSWORD"
 }
 
 case "$1" in
