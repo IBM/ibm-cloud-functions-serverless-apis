@@ -34,9 +34,9 @@ pipeline-serverless-apis:
        MYSQL_USERNAME: "{{deploy.parameters.mysql-username}}"
        MYSQL_PASSWORD: "{{deploy.parameters.mysql-password}}"
        MYSQL_DATABASE: "{{deploy.parameters.mysql-database}}"
-       BLUEMIX_USERNAME: "{{deploy.parameters.bluemix-username}}"
-       BLUEMIX_PASSWORD: "{{deploy.parameters.bluemix-password}}"
-       BLUEMIX_NAMESPACE: "{{deploy.parameters.bluemix-namespace}}"
+       IBM_CLOUD_USERNAME: "{{deploy.parameters.bluemix-username}}"
+       IBM_CLOUD_PASSWORD: "{{deploy.parameters.bluemix-password}}"
+       IBM_CLOUD_NAMESPACE: "{{deploy.parameters.bluemix-namespace}}"
       execute: false
 
 deploy:
