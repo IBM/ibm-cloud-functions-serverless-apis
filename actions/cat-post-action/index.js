@@ -19,6 +19,7 @@
  * This action adds a new cat to a MySQL database.
  *
  * @param   params.MYSQL_HOSTNAME    MySQL hostname
+ * @param   params.MYSQL_PORT        MySQL port
  * @param   params.MYSQL_USERNAME    MySQL username
  * @param   params.MYSQL_PASSWORD    MySQL password
  * @param   params.MYSQL_DATABASE    MySQL database
@@ -35,6 +36,7 @@ function myAction(params) {
     var connection;
     mysql.createConnection({
       host: params.MYSQL_HOSTNAME,
+      port: params.MYSQL_PORT,
       user: params.MYSQL_USERNAME,
       password: params.MYSQL_PASSWORD,
       database: params.MYSQL_DATABASE
