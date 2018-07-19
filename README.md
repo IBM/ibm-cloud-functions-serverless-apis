@@ -99,6 +99,7 @@ Because all of the actions rely on the MySQL database service, it's convenient t
 source local.env
 bx wsk package create cat \
   --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
+  --param "MYSQL_PORT" $MYSQL_PORT \
   --param "MYSQL_USERNAME" $MYSQL_USERNAME \
   --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
   --param "MYSQL_DATABASE" $MYSQL_DATABASE

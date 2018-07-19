@@ -31,16 +31,18 @@ function install() {
   echo -e "Setting Bluemix credentials and logging in to provision API Gateway"
 
   # Edit these to match your Bluemix credentials (needed to provision the API Gateway)
-  bx wsk bluemix login \
-    --user $IBM_CLOUD_USERNAME \
-    --password $IBM_CLOUD_PASSWORD \
-    --namespace $IBM_CLOUD_NAMESPACE
+  bx login \
+    --u $IBM_CLOUD_USERNAME \
+    --p $IBM_CLOUD_PASSWORD \
+    --o $IBM_CLOUD_USERNAME \
+    --s $IBM_CLOUD_NAMESPACE
 
   echo -e "\n"
 
   echo "Creating a package (here used as a namespace for shared environment variables)"
   bx wsk package create cat \
     --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
+    --param "MYSQL_PORT" $MYSQL_PORT \
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
     --param "MYSQL_PASSWORD" $MYSQL_PASSWORD \
     --param "MYSQL_DATABASE" $MYSQL_DATABASE
@@ -111,6 +113,7 @@ function showenv() {
   echo -e MYSQL_USERNAME="$MYSQL_USERNAME"
   echo -e MYSQL_PASSWORD="$MYSQL_PASSWORD"
   echo -e MYSQL_DATABASE="$MYSQL_DATABASE"
+  echo -e MYSQL_PORT="$MYSQL_PORT"
   echo -e IBM_CLOUD_USERNAME="$IBM_CLOUD_USERNAME"
   echo -e IBM_CLOUD_PASSWORD="$IBM_CLOUD_PASSWORD"
 }
