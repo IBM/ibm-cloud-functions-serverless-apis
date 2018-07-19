@@ -1,7 +1,5 @@
 # OpenWhisk로 구성하는 서버리스 API
 
-[![Build Status](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis)
-
 *다른 언어로 보기: [English](README.md).*
 
 이 과정은 서버리스, 이벤트 중심 아키텍쳐가 어떻게 HTTP REST API 호출에 대응하여 자동으로 확장되는 코드를 실행하는지 보여줍니다. API 엔드포인트가 호출 되기 전까지 소비되는 리소스가 없습니다. 엔드포인트가 호출 될 때, 리소스는 HTTP 메소드에서 개별적으로 현재 필요로하는 부하에 정확히 맞춰서 프로비저닝됩니다.
