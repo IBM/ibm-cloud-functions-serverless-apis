@@ -20,7 +20,7 @@ import time
 from subprocess import call
 
 CAT_API_URL = os.environ['CAT_API_URL']
-print "CAT_API_URL is: " + CAT_API_URL
+print ("CAT_API_URL is: " + CAT_API_URL)
 
 
 def main():

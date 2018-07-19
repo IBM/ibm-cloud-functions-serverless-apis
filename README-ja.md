@@ -1,7 +1,5 @@
 # IBM Cloud Functions でサーバーレス API ハンドラーを作成する (Apache OpenWhisk の利用)
 
-[![Build Status](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis.svg?branch=master)](https://travis-ci.org/IBM/ibm-cloud-functions-serverless-apis)
-
 *Read this in other languages: [English](README.md), [한국어](README-ko.md).*
 
 このプロジェクトは、サーバーレスのイベント駆動型アーキテクチャーの仕組みを説明するものです。このアーテクチャーでは、HTTP REST API の呼び出しにより、需要に応じてコードが実行されます。API エンドポイントが呼び出されるまでは、レスポンスにリソースは消費されません。API エンドポイントが呼び出されると、現在の負荷とちょうど一致するようにリソースがプロビジョニングされます。
