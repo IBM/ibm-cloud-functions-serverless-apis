@@ -4,18 +4,17 @@
 
 該專案主要用來了解無服務器、事件驅動式架構如何執行能動態擴展以符合資源需求的程式，用以回應HTTP REST API的呼叫。 程式在調用 API 端點之前不會消耗任何資源。 調用它們時，會調配資源以獨立地配置每個HTTP請求所需的當下資源負載。
 
-專案中包含四個 JavaScript 編寫的動作 （運行在 IBM Cloud Functions 使用 Apache OpenWhisk）操作（用JavaScript編寫），四個動作用在 MySQL 資料庫中寫入和讀取資料。 示範每項動作是如何讓資料服務及執行邏輯一起運作以回應HTTP請求。
+專案中包含四個 運行在 IBM Cloud Functions （使用 Apache OpenWhisk）的動作（用JavaScript編寫），用在 MySQL 資料庫中寫入和讀取資料。示範每項動作是如何讓資料服務及執行邏輯一起運作以回應HTTP請求。
 
 第一個動作對應到HTTP POST請求，將貓的名字跟顏色參數新增至資料庫中。 第二個動作會對應至PUT請求以更新現有貓資料的欄位值。 第三個動作會對應至傳回指定貓的資料的GET請求。 第四個動作會刪除指定的貓的資料。
 
-IBM Cloud上 的 Node.js 執行系統 (runtime) 會提供內建的npm模組白名單。 此範例也會示範如何使用自訂動作將其它 Node.js 相依模組（例如MySQL用戶端npm）包裝在ZIP檔中以提供進一步的整合。
+IBM Cloud上 的 Node.js 執行系統 (runtime) 會提供內建的npm模組白名單。 此範例也會示範如何將其它 Node.js 相依模組（例如MySQL用戶端npm）和自訂動作打包到ZIP檔中以提供更大的擴展性。
 
 ![架構範例](docs/arch_buildserverless.png)
 
 ## 包含的元件
 
 - IBM Cloud Functions (使用 Apache OpenWhisk)
-- ClearDB 或是 Compose (MySQL)
 
 ## 必備條件
 
@@ -243,7 +242,7 @@ bx wsk package delete cat
 
 ## 疑難排除
 
-首先在OpenWhisk活動日誌中檢查錯誤。 執行`bx wsk activation poll`指令可持續在畫面上顯示活動日誌，或使用 [點選 IBM Cloud Functions 上的監視選項] 讀取活動日誌詳細訊息 (https://console.ng.bluemix.net/openwhisk/dashboard).
+首先在OpenWhisk活動日誌中檢查錯誤。 執行`bx wsk activation poll`指令可持續在畫面上顯示活動日誌，或使用 [點選 IBM Cloud Functions 上的監視選項] (https://console.ng.bluemix.net/openwhisk/dashboard) 讀取活動日誌詳細訊息 .
 
 如果沒辦法馬上找到錯誤訊息, 請先確定已安裝了 [最新版本的 `bx wsk` CLI 指令工具](https://console.ng.bluemix.net/openwhisk/learn/cli). 如果版本超過幾週沒更新, 請下載並更新至最新版本.
 
