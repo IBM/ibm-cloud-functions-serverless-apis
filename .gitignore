@@ -3,9 +3,4 @@ local.env
 *.zip
 node_modules
 mysql.key
-
-actions/cat-delete-action/package-lock.json
-
-actions/cat-get-action/package-lock.json
-
-actions/cat-put-action/package-lock.json
+package-lock.json
