@@ -3,3 +3,4 @@ local.env
 *.zip
 node_modules
 mysql.key
+package-lock.json
