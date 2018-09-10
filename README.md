@@ -1,6 +1,6 @@
 # Serverless APIs with IBM Cloud Functions (powered by Apache OpenWhisk)
 
-*Read this in other languages: [한국어](README-ko.md), [日本語](README-ja.md).*
+*Read this in other languages: [한국어](README-ko.md), [日本語](README-ja.md), [繁體中文](README-zhTW.md).*
 
 This project shows how serverless, event-driven architectures can execute code that scales automatically in response to demand from HTTP REST API calls. No resources are consumed until the API endpoints are called. When they are called, resources are provisioned to exactly match the current load needed by each HTTP method independently.
 
