@@ -28,10 +28,10 @@ function install() {
 
   echo -e "Installing OpenWhisk actions, triggers, and rules for openwhisk-serverless-apis..."
 
-  echo -e "Setting Bluemix credentials and logging in to provision API Gateway"
+  echo -e "Setting IBM Cloud credentials and logging in to provision API Gateway"
 
-  # Edit these to match your Bluemix credentials (needed to provision the API Gateway)
-  bx login \
+  # Edit these to match your IBM Cloud credentials (needed to provision the API Gateway)
+  ibmcloud login \
     --u $IBM_CLOUD_USERNAME \
     --p $IBM_CLOUD_PASSWORD \
     --o $IBM_CLOUD_USERNAME \
@@ -40,7 +40,7 @@ function install() {
   echo -e "\n"
 
   echo "Creating a package (here used as a namespace for shared environment variables)"
-  bx wsk package create cat \
+  ibmcloud fn package create cat \
     --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
     --param "MYSQL_PORT" $MYSQL_PORT \
     --param "MYSQL_USERNAME" $MYSQL_USERNAME \
@@ -51,40 +51,40 @@ function install() {
   cd actions/cat-post-action
   npm install
   zip -rq action.zip *
-  bx wsk action create cat/cat-post \
+  ibmcloud fn action create cat/cat-post \
     --kind nodejs:6 action.zip \
     --web true
-  bx wsk api create -n "Cats API" /v1 /cat POST cat/cat-post
+  ibmcloud fn api create -n "Cats API" /v1 /cat POST cat/cat-post
   cd ../..
 
   echo "Installing PUT Cat Action"
   cd actions/cat-put-action
   npm install
   zip -rq action.zip *
-  bx wsk action create cat/cat-put \
+  ibmcloud fn action create cat/cat-put \
     --kind nodejs:6 action.zip \
     --web true
-  bx wsk api create /v1 /cat PUT cat/cat-put
+  ibmcloud fn api create /v1 /cat PUT cat/cat-put
   cd ../..
 
   echo "Installing GET Cat Action"
   cd actions/cat-get-action
   npm install
   zip -rq action.zip *
-  bx wsk action create cat/cat-get \
+  ibmcloud fn action create cat/cat-get \
     --kind nodejs:6 action.zip \
     --web true
-  bx wsk api create /v1 /cat GET cat/cat-get
+  ibmcloud fn api create /v1 /cat GET cat/cat-get
   cd ../..
 
   echo "Installing DELETE Cat Action"
   cd actions/cat-delete-action
   npm install
   zip -rq action.zip *
-  bx wsk action create cat/cat-delete \
+  ibmcloud fn action create cat/cat-delete \
     --kind nodejs:6 action.zip \
     --web true
-  bx wsk api create /v1 /cat DELETE cat/cat-delete
+  ibmcloud fn api create /v1 /cat DELETE cat/cat-delete
   cd ../..
 
   echo -e "Install Complete"
@@ -94,16 +94,16 @@ function uninstall() {
   echo -e "Uninstalling..."
 
   echo "Removing API actions..."
-  bx wsk api delete /v1
+  ibmcloud fn api delete /v1
 
   echo "Removing actions..."
-  bx wsk action delete cat/cat-post
-  bx wsk action delete cat/cat-put
-  bx wsk action delete cat/cat-get
-  bx wsk action delete cat/cat-delete
+  ibmcloud fn action delete cat/cat-post
+  ibmcloud fn action delete cat/cat-put
+  ibmcloud fn action delete cat/cat-get
+  ibmcloud fn action delete cat/cat-delete
 
   echo "Removing package..."
-  bx wsk package delete cat
+  ibmcloud fn package delete cat
 
   echo -e "Uninstall Complete"
 }
