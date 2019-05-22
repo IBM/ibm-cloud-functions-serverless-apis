@@ -21,7 +21,7 @@ The Node.js runtime on the IBM Cloud provides a built-in whitelist of npm module
 
 You should have a basic understanding of the OpenWhisk programming model. If not, [try the action, trigger, and rule demo first](https://github.com/IBM/openwhisk-action-trigger-rule).
 
-Also, you'll need an IBM Cloud account and the latest [OpenWhisk command line tool (`bx wsk`) installed and on your PATH](https://github.com/IBM/openwhisk-action-trigger-rule/blob/master/docs/OPENWHISK.md).
+Also, you'll need an IBM Cloud account and the latest [OpenWhisk command line tool (`ibmcloud fn`) installed and on your PATH](https://github.com/IBM/openwhisk-action-trigger-rule/blob/master/docs/OPENWHISK.md).
 
 As an alternative to this end-to-end example, you might also consider the more [basic "building block" version](https://github.com/IBM/openwhisk-rest-api-trigger) of this sample.
 
@@ -95,7 +95,7 @@ Because all of the actions rely on the MySQL database service, it's convenient t
 
 ```bash
 source local.env
-bx wsk package create cat \
+ibmcloud fn package create cat \
   --param "MYSQL_HOSTNAME" $MYSQL_HOSTNAME \
   --param "MYSQL_PORT" $MYSQL_PORT \
   --param "MYSQL_USERNAME" $MYSQL_USERNAME \
@@ -117,16 +117,16 @@ Next use the OpenWhisk CLI to create an action from `action.zip`.
 
 ```bash
 # Create
-bx wsk action create cat/cat-post \
+ibmcloud fn action create cat/cat-post \
   --kind nodejs:6 action.zip \
   --web true
 ```
 
-Then manually invoke the action using the `bx wsk` CLI to test.
+Then manually invoke the action using the `ibmcloud fn` CLI to test.
 
 ```bash
 # Test
-bx wsk action invoke \
+ibmcloud fn action invoke \
   --blocking \
   --param name Tarball \
   --param color Black \
@@ -144,12 +144,12 @@ Repeat the steps above to create and test the corresponding GET, PUT, and DELETE
 cd ../../actions/cat-get-action
 npm install
 zip -rq action.zip *
-bx wsk action create cat/cat-get \
+ibmcloud fn action create cat/cat-get \
   --kind nodejs:6 action.zip \
   --web true
 
 # Test
-bx wsk action invoke \
+ibmcloud fn action invoke \
   --blocking \
   --param id 1 \
   cat/cat-get
@@ -162,19 +162,19 @@ bx wsk action invoke \
 cd ../../actions/cat-put-action
 npm install
 zip -rq action.zip *
-bx wsk action create cat/cat-put \
+ibmcloud fn action create cat/cat-put \
   --kind nodejs:6 action.zip \
   --web true
 
 # Test
-bx wsk action invoke \
+ibmcloud fn action invoke \
   --blocking \
   --param name Tarball \
   --param color Gray \
   --param id 1 \
   cat/cat-put
 
-bx wsk action invoke \
+ibmcloud fn action invoke \
   --blocking \
   --param id 1 \
   cat/cat-get
@@ -187,17 +187,17 @@ bx wsk action invoke \
 cd ../../actions/cat-delete-action
 npm install
 zip -rq action.zip *
-bx wsk action create cat/cat-delete \
+ibmcloud fn action create cat/cat-delete \
   --kind nodejs:6 action.zip \
   --web true
 
 # Test
-bx wsk action invoke \
+ibmcloud fn action invoke \
   --blocking \
   --param id 1 \
   cat/cat-delete
 
-bx wsk action invoke \
+ibmcloud fn action invoke \
   --blocking \
   --param id 1 \
   cat/cat-get
@@ -209,10 +209,10 @@ Now map a resource endpoint (`/cat`) to the `GET`, `DELETE`, `PUT`, and `POST` H
 
 ```bash
 # Create
-bx wsk api create -n "Cats API" /v1 /cat post cat/cat-post
-bx wsk api create /v1 /cat put cat/cat-put
-bx wsk api create /v1 /cat get cat/cat-get
-bx wsk api create /v1 /cat delete cat/cat-delete
+ibmcloud fn api create -n "Cats API" /v1 /cat post cat/cat-post
+ibmcloud fn api create /v1 /cat put cat/cat-put
+ibmcloud fn api create /v1 /cat get cat/cat-get
+ibmcloud fn api create /v1 /cat delete cat/cat-delete
 
 # Test
 
@@ -234,22 +234,22 @@ client/cat-delete.sh 1
 Remove the API mappings and delete the actions.
 
 ```bash
-bx wsk api delete /v1
-bx wsk action delete cat/cat-post
-bx wsk action delete cat/cat-put
-bx wsk action delete cat/cat-get
-bx wsk action delete cat/cat-delete
-bx wsk package delete cat
+ibmcloud fn api delete /v1
+ibmcloud fn action delete cat/cat-post
+ibmcloud fn action delete cat/cat-put
+ibmcloud fn action delete cat/cat-get
+ibmcloud fn action delete cat/cat-delete
+ibmcloud fn package delete cat
 ```
 
 ## Troubleshooting
 
-Check for errors first in the OpenWhisk activation log. Tail the log on the command line with `bx wsk activation poll` or drill into details visually with the [monitoring console on the IBM Cloud](https://console.ng.bluemix.net/openwhisk/dashboard).
+Check for errors first in the OpenWhisk activation log. Tail the log on the command line with `ibmcloud fn activation poll` or drill into details visually with the [monitoring console on the IBM Cloud](https://console.ng.bluemix.net/openwhisk/dashboard).
 
-If the error is not immediately obvious, make sure you have the [latest version of the `bx wsk` CLI installed](https://console.ng.bluemix.net/openwhisk/learn/cli). If it's older than a few weeks, download an update.
+If the error is not immediately obvious, make sure you have the [latest version of the `ibmcloud fn` CLI installed](https://console.ng.bluemix.net/openwhisk/learn/cli). If it's older than a few weeks, download an update.
 
 ```bash
-bx wsk property get --cliversion
+ibmcloud fn property get --cliversion
 ```
 
 ## Alternative deployment methods
