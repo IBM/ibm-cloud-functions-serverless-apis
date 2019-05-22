@@ -5,7 +5,7 @@ if [ "$#" -ne 3 ]; then
     exit
 fi
 
-CAT_API_URL=`wsk api list | tail -1 | awk '{print $5}'`
+CAT_API_URL=`ibmcloud fn api list | tail -1 | awk '{print $5}'`
 
 curl -X PUT \
   -H "Content-Type: application/json" \

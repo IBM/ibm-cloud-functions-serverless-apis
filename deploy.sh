@@ -31,11 +31,11 @@ function install() {
   echo -e "Setting IBM Cloud credentials and logging in to provision API Gateway"
 
   # Edit these to match your IBM Cloud credentials (needed to provision the API Gateway)
-  ibmcloud login \
-    --u $IBM_CLOUD_USERNAME \
-    --p $IBM_CLOUD_PASSWORD \
-    --o $IBM_CLOUD_USERNAME \
-    --s $IBM_CLOUD_NAMESPACE
+#  ibmcloud login \
+ #   --u $IBM_CLOUD_USERNAME \
+  #  --p $IBM_CLOUD_PASSWORD \
+   # --o $IBM_CLOUD_ORGANIZATION \
+    #--s $IBM_CLOUD_SPACE
 
   echo -e "\n"
 
