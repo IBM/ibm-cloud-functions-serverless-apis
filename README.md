@@ -8,7 +8,7 @@ It shows four IBM Cloud Functions (powered by Apache OpenWhisk) actions (written
 
 One action is mapped to HTTP POST requests. It inserts the supplied cat name and color parameters into the database. A second action is mapped to PUT requests to update those fields for an existing cat. A third action is mapped to GET requests that return specific cat data. A fourth action deletes a given cat data.
 
-The Node.js runtime on the IBM Cloud provides a built-in whitelist of npm modules. This demo also highlights how additional Node.js dependencies – such as the MySQL client – can be packaged in a ZIP file with custom actions to provide a high level of extensibility.
+The Node.js runtime on the IBM Cloud provides a built-in list of approved npm modules. This demo also highlights how additional Node.js dependencies – such as the MySQL client – can be packaged in a ZIP file with custom actions to provide a high level of extensibility.
 
 ![Sample Architecture](docs/arch_buildserverless.png)
 
